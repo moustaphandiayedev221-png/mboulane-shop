@@ -106,7 +106,7 @@ export async function CollectionsSection() {
               <Link
                 key={c.id}
                 href={href}
-                className="group flex flex-col border border-[#d8ccb8] bg-[#FDFBF7] p-4 pb-5 shadow-[0_1px_0_rgba(0,0,0,0.03)] transition-[box-shadow,transform,border-color] duration-300 hover:-translate-y-0.5 hover:border-[#C0A080]/65 hover:shadow-[0_18px_40px_rgba(0,0,0,0.07)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C0A080]/45 focus-visible:ring-offset-2 focus-visible:ring-offset-[#F7F3EC]"
+                className="group flex flex-col border border-[#d8ccb8] bg-[#FDFBF7] p-4 pb-6 shadow-[0_1px_0_rgba(0,0,0,0.03)] transition-[box-shadow,transform,border-color] duration-300 hover:-translate-y-0.5 hover:border-[#C0A080]/65 hover:shadow-[0_18px_40px_rgba(0,0,0,0.07)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C0A080]/45 focus-visible:ring-offset-2 focus-visible:ring-offset-[#F7F3EC]"
               >
                 <div className="flex flex-col px-1 text-center">
                   <GoldFlourish compact />
@@ -116,7 +116,7 @@ export async function CollectionsSection() {
                   <GoldFlourish compact />
                 </div>
 
-                <div className="relative mx-auto mt-4 w-full max-w-[280px] px-2 sm:max-w-none">
+                <div className="relative mt-4 w-full px-1">
                   <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#ebe6dc]">
                     <div className="absolute inset-0 grid grid-cols-1 grid-rows-1">
                       <div className="relative col-start-1 row-start-1 min-h-0 min-w-0">
@@ -133,7 +133,7 @@ export async function CollectionsSection() {
                         aria-hidden
                       />
                       <div className="pointer-events-none col-start-1 row-start-1 z-[2] flex flex-col justify-end bg-gradient-to-t from-black/65 via-black/30 to-transparent px-2 pb-3.5 pt-20">
-                        <p className="font-script text-center text-[clamp(1.05rem,3vw,1.65rem)] font-normal leading-snug text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)]">
+                        <p className="font-script text-center text-[clamp(1.4rem,4.2vw,2.25rem)] font-normal leading-snug text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)]">
                           {subtitle}
                         </p>
                       </div>

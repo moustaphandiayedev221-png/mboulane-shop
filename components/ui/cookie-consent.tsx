@@ -56,8 +56,7 @@ export function CookieConsent() {
         </button>
       </div>
       <p className="shrink-0 text-sm leading-relaxed text-muted-foreground">
-        Nous utilisons des cookies pour améliorer votre expérience et mesurer l&apos;audience. Vous pouvez accepter ou
-        refuser.
+        Nous utilisons des cookies pour améliorer votre expérience. Vous pouvez accepter ou refuser.
       </p>
       <div className="mt-1 flex min-h-0 shrink-0 flex-col gap-2 sm:gap-3">
         <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">

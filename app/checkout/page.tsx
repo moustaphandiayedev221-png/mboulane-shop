@@ -541,12 +541,21 @@ export default function CheckoutPage() {
                         <textarea id="notes" name="notes" rows={3} placeholder="Indications pour le livreur..." value={formData.notes} onChange={handleInputChange} className="w-full resize-none rounded-[5px] border border-[#e8e2d8] bg-white px-4 py-4 text-sm outline-none transition-all focus-visible:ring-2 focus-visible:ring-[#b38b6d]/30" />
                       </div>
                     </LuxuryPanel>
-                    <div className="grid grid-cols-2 gap-4">
-                      <Button type="button" variant="outline" onClick={prevStep} className="h-12 rounded-full border-2 border-[#e0d9ce] font-semibold hover:bg-[#FDFBF7]">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={prevStep}
+                        className="h-12 w-full rounded-full border-2 border-[#e0d9ce] font-semibold hover:bg-[#FDFBF7]"
+                      >
                         <ChevronLeft className="mr-2 h-5 w-5" />
                         Retour
                       </Button>
-                      <Button type="button" onClick={nextStep} className="h-12 rounded-full font-semibold shadow-[0_12px_36px_rgba(179,139,109,0.28)]">
+                      <Button
+                        type="button"
+                        onClick={nextStep}
+                        className="h-12 w-full rounded-full font-semibold shadow-[0_12px_36px_rgba(179,139,109,0.28)]"
+                      >
                         Passer au paiement
                         <ChevronRight className="h-5 w-5 ml-2" />
                       </Button>
@@ -595,14 +604,34 @@ export default function CheckoutPage() {
                         ))}
                       </div>
                     </LuxuryPanel>
-                    <div className="grid grid-cols-2 gap-4">
-                      <Button type="button" variant="outline" onClick={prevStep} className="h-12 rounded-full border-2 border-[#e0d9ce] font-semibold hover:bg-[#FDFBF7]">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={prevStep}
+                        className="h-12 w-full rounded-full border-2 border-[#e0d9ce] font-semibold hover:bg-[#FDFBF7]"
+                      >
                         <ChevronLeft className="mr-2 h-5 w-5" />
                         Retour
                       </Button>
-                      <Button type="submit" disabled={isSubmitting} className="h-12 rounded-full font-semibold shadow-[0_12px_36px_rgba(179,139,109,0.28)]">
-                        {isSubmitting ? <Loader2 className="h-5 w-5 animate-spin mr-2" /> : <ShoppingBag className="h-5 w-5 mr-2" />}
-                        {isSubmitting ? "Traitement..." : `Confirmer la commande — ${formatPrice(total)}`}
+                      <Button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="h-auto min-h-12 w-full gap-2 rounded-full px-4 py-3 text-sm font-semibold leading-tight shadow-[0_12px_36px_rgba(179,139,109,0.28)] sm:h-12 sm:py-0 sm:text-base"
+                      >
+                        {isSubmitting ? (
+                          <Loader2 className="h-5 w-5 shrink-0 animate-spin" />
+                        ) : (
+                          <ShoppingBag className="h-5 w-5 shrink-0" />
+                        )}
+                        {isSubmitting ? (
+                          "Traitement..."
+                        ) : (
+                          <>
+                            <span className="hidden sm:inline whitespace-nowrap">{`Confirmer — ${formatPrice(total)}`}</span>
+                            <span className="sm:hidden whitespace-nowrap">{`Confirmer — ${formatPrice(total)}`}</span>
+                          </>
+                        )}
                       </Button>
                     </div>
                   </div>

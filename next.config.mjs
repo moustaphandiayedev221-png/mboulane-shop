@@ -67,6 +67,7 @@ function securityHeaders() {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  allowedDevOrigins: ["localhost", "127.0.0.1", "0.0.0.0", "192.168.1.31"],
   async rewrites() {
     return [{ source: "/favicon.ico", destination: "/brand-ms-logo.png" }]
   },
