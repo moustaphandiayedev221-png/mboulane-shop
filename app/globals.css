@@ -1,0 +1,467 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+/* Assure le scan des classes sur tout le projet (évite un build CSS vide selon l’environnement) */
+@source "../app/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../components/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../lib/**/*.{js,ts,jsx,tsx}";
+
+@custom-variant dark (&:is(.dark *));
+
+/* MBOULANE SHOP - African Luxury Theme */
+:root {
+  /* Ultra-light Sand Beige (#FDFBF7) - Demande utilisateur */
+  --background: #FDFBF7;
+  --foreground: #000000;
+  
+  /* Pure White Cards for maximum product prominence */
+  --card: #FFFFFF;
+  --card-foreground: #000000;
+  
+  --popover: #FFFFFF;
+  --popover-foreground: #000000;
+  
+  /* Deep Black as primary action color */
+  --primary: #000000;
+  --primary-foreground: #FFFFFF;
+  
+  /* Leather Brown as secondary/accent */
+  --secondary: #8B5E3C;
+  --secondary-foreground: #FFFFFF;
+  
+  /* Muted tones (très doux) */
+  --muted: #F8F5F0;
+  --muted-foreground: #665B4F;
+  
+  /* Leather Brown accent */
+  --accent: #8B5E3C;
+  --accent-foreground: #FFFFFF;
+  
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.98 0 0);
+  
+  /* Bordures très discrètes */
+  --border: #F0EDE6;
+  --input: #F8F5F0;
+  --ring: #8B5E3C;
+  
+  /* Chart colors */
+  --chart-1: #8B5E3C;
+  --chart-2: oklch(0.60 0.08 85);
+  --chart-3: oklch(0.35 0.05 55);
+  --chart-4: oklch(0.70 0.12 55);
+  --chart-5: oklch(0.40 0.08 35);
+  
+  --radius: 0.5rem;
+  
+  --sidebar: #FDFBF7;
+  --sidebar-foreground: #000000;
+  --sidebar-primary: #000000;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #8B5E3C;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #F0EDE6;
+  --sidebar-ring: #8B5E3C;
+}
+
+/* Gradient subtil ultra-premium recommandé pour casser l'effet plat */
+body {
+  background-color: var(--background);
+  background-image: linear-gradient(to bottom, #FFFFFF 0%, #FDFBF7 100%);
+  background-attachment: fixed;
+}
+
+/* iOS/Android: background-attachment: fixed est souvent saccadé/bugué */
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll;
+  }
+}
+
+.dark {
+  /* Deep Black background */
+  --background: oklch(0.10 0 0);
+  --foreground: oklch(0.96 0.012 85);
+  
+  --card: oklch(0.14 0.005 50);
+  --card-foreground: oklch(0.96 0.012 85);
+  
+  --popover: oklch(0.14 0.005 50);
+  --popover-foreground: oklch(0.96 0.012 85);
+  
+  /* Sand Beige as primary in dark mode */
+  --primary: oklch(0.96 0.012 85);
+  --primary-foreground: oklch(0.10 0 0);
+  
+  /* Leather Brown secondary */
+  --secondary: oklch(0.42 0.09 50);
+  --secondary-foreground: oklch(0.96 0.012 85);
+  
+  --muted: oklch(0.20 0.005 50);
+  --muted-foreground: oklch(0.68 0.02 85);
+  
+  /* Leather Brown accent */
+  --accent: oklch(0.55 0.13 50);
+  --accent-foreground: oklch(0.96 0.012 85);
+  
+  --destructive: oklch(0.45 0.18 25);
+  --destructive-foreground: oklch(0.95 0 0);
+  
+  --border: oklch(0.23 0.015 50);
+  --input: oklch(0.20 0.005 50);
+  --ring: oklch(0.55 0.13 50);
+  
+  --chart-1: oklch(0.55 0.13 50);
+  --chart-2: oklch(0.65 0.08 85);
+  --chart-3: oklch(0.45 0.06 55);
+  --chart-4: oklch(0.75 0.14 55);
+  --chart-5: oklch(0.50 0.10 35);
+  
+  --sidebar: oklch(0.14 0.005 50);
+  --sidebar-foreground: oklch(0.96 0.012 85);
+  --sidebar-primary: oklch(0.55 0.13 50);
+  --sidebar-primary-foreground: oklch(0.96 0.012 85);
+  --sidebar-accent: oklch(0.20 0.005 50);
+  --sidebar-accent-foreground: oklch(0.96 0.012 85);
+  --sidebar-border: oklch(0.23 0.015 50);
+  --sidebar-ring: oklch(0.55 0.13 50);
+}
+
+@theme inline {
+  --font-sans: var(--font-poppins), 'Poppins', system-ui, sans-serif;
+  --font-serif: var(--font-playfair), 'Playfair Display', Georgia, serif;
+  --font-script: var(--font-great-vibes), 'Great Vibes', cursive;
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback', monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  
+  /* Force solid background for navbar to eliminate transparency */
+  header {
+    background-color: #FDFBF7 !important;
+    opacity: 1 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  
+  .dark header {
+    background-color: #0A0A0A !important;
+  }
+}
+
+/* ===== Custom Scrollbar – Premium Feel ===== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary);
+}
+
+/* ===== Smooth Scrolling ===== */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== PREMIUM ANIMATIONS ===== */
+
+/* Fade in from below */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide up with spring feel */
+@keyframes slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  60% {
+    transform: translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Gentle float / breathing */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* Shimmer for loading / premium badges */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Subtle pulse glow */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 var(--accent);
+  }
+  50% {
+    box-shadow: 0 0 20px 4px color-mix(in oklch, var(--accent) 25%, transparent);
+  }
+}
+
+/* Scale in */
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Scroll-reveal (used by IntersectionObserver) */
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 25%,
+    color-mix(in oklch, var(--accent) 15%, transparent) 50%,
+    transparent 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2.5s infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Scroll-triggered reveal – elements start invisible, animate in when .is-visible is added */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== SECTION DIVIDER – decorative ===== */
+.section-divider {
+  width: 48px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--accent);
+  margin-inline: auto;
+}
+
+/* ===== PREMIUM CARD STYLES ===== */
+.premium-card {
+  background: var(--card);
+  border-radius: calc(var(--radius) + 4px);
+  border: 1px solid var(--border);
+  box-shadow:
+    0 1px 2px color-mix(in oklch, var(--foreground) 3%, transparent),
+    0 4px 12px color-mix(in oklch, var(--foreground) 4%, transparent);
+  transition: box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.4s ease;
+}
+
+.premium-card:hover {
+  box-shadow:
+    0 2px 4px color-mix(in oklch, var(--foreground) 4%, transparent),
+    0 8px 24px color-mix(in oklch, var(--foreground) 7%, transparent),
+    0 16px 48px color-mix(in oklch, var(--foreground) 4%, transparent);
+  transform: translateY(-4px);
+  border-color: var(--accent);
+}
+
+/* ===== GLASS EFFECT ===== */
+.glass {
+  background: color-mix(in oklch, var(--background) 80%, transparent);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+}
+
+/* ===== IMAGE QUALITY ===== */
+img {
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* ===== SELECTION STYLE ===== */
+::selection {
+  background: color-mix(in oklch, var(--accent) 30%, transparent);
+  color: var(--foreground);
+}
+
+/* ===== GRADIENT MESH ANIMATION ===== */
+.bg-mesh {
+  background: radial-gradient(at 0% 0%, color-mix(in oklch, var(--accent) 15%, transparent) 0, transparent 40%),
+              radial-gradient(at 100% 0%, color-mix(in oklch, var(--accent) 5%, transparent) 0, transparent 40%),
+              radial-gradient(at 100% 100%, color-mix(in oklch, var(--secondary) 10%, transparent) 0, transparent 40%),
+              radial-gradient(at 0% 100%, color-mix(in oklch, var(--accent) 10%, transparent) 0, transparent 40%);
+  background-size: 200% 200%;
+  animation: mesh-movement 15s ease infinite alternate;
+}
+
+@keyframes mesh-movement {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+/* Bandeau défilant (évite styled-jsx / erreurs client) */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-scroll {
+  animation: marquee-scroll 30s linear infinite;
+}
+
+/* Bouton WhatsApp flottant — animation au toucher */
+@keyframes whatsapp-nudge {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  22% {
+    transform: scale(1.14);
+  }
+  48% {
+    transform: scale(0.92);
+  }
+  72% {
+    transform: scale(1.08);
+  }
+}
+
+.animate-whatsapp-nudge {
+  animation: whatsapp-nudge 0.55s ease-out;
+}
+
+/* Icône WhatsApp — léger balancement en boucle au survol (voir group-hover sur le lien) */
+@keyframes whatsapp-icon-wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  20% {
+    transform: rotate(-10deg) scale(1.06);
+  }
+  40% {
+    transform: rotate(10deg) scale(1.04);
+  }
+  60% {
+    transform: rotate(-6deg) scale(1.06);
+  }
+  80% {
+    transform: rotate(6deg) scale(1.03);
+  }
+}
