@@ -9,6 +9,21 @@ import { Label } from "@/components/ui/label"
 import { createClient } from "@/lib/supabase/client"
 import { cn } from "@/lib/utils"
 
+/** Messages Supabase Auth fréquents → français (le détail aide au debug). */
+function formatAdminSignInError(message: string): string {
+  const m = message.trim().toLowerCase()
+  if (m.includes("invalid login credentials") || m.includes("invalid_credentials")) {
+    return "E-mail ou mot de passe incorrect. Vérifiez dans Supabase (Auth → Users) que cet utilisateur existe, ou réinitialisez le mot de passe."
+  }
+  if (m.includes("email not confirmed")) {
+    return "E-mail non confirmé. Ouvrez le lien de confirmation envoyé par Supabase, ou désactivez « Confirm email » dans Auth → Providers → Email."
+  }
+  if (m.includes("user not found") || m.includes("user does not exist")) {
+    return "Aucun compte avec cet e-mail. Créez l’utilisateur dans Supabase (Auth → Users → Add user)."
+  }
+  return message || "Connexion impossible. Vérifiez Supabase Auth et réessayez."
+}
+
 export default function AdminConnexionPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -24,7 +39,9 @@ export default function AdminConnexionPage() {
       return
     }
     if (reason === "denied") {
-      setError("Accès refusé. Cet e-mail n’est pas autorisé pour l’admin.")
+      setError(
+        "Cet e-mail n’est pas dans la liste autorisée. Ajoutez-le à la variable d’environnement ADMIN_EMAILS (séparateur : virgule), puis redémarrez le serveur ou redéployez.",
+      )
       return
     }
     const supabase = createClient()
@@ -55,13 +72,13 @@ export default function AdminConnexionPage() {
         password,
       })
       if (signInError) {
-        setError("Accès refusé.")
+        setError(formatAdminSignInError(signInError.message))
         setLoading(false)
         return
       }
       router.replace("/admin/tableau")
     } catch {
-      setError("Accès refusé.")
+      setError("Erreur réseau ou serveur. Réessayez dans un instant.")
     } finally {
       setLoading(false)
     }
