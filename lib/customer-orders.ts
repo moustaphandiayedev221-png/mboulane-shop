@@ -3,7 +3,7 @@
  * Les commandes sont enregistrées au paiement sur /checkout avec l’email du formulaire.
  */
 
-export type OrderStatus = "confirmée" | "préparation" | "expédiée" | "livrée"
+export type OrderStatus = "confirmée" | "préparation" | "expédiée" | "livrée" | "annulée" | "remboursée"
 
 export interface StoredOrderLine {
   productId: string

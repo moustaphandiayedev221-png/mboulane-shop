@@ -4,7 +4,7 @@ import { createServiceRoleClient } from "@/lib/supabase/admin"
 import { assertAdmin } from "@/lib/admin/auth"
 
 const schema = z.object({
-  status: z.enum(["confirmée", "préparation", "expédiée", "livrée"]),
+  status: z.enum(["confirmée", "préparation", "expédiée", "livrée", "annulée", "remboursée"]),
 })
 
 export async function PATCH(

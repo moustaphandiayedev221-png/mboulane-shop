@@ -5,31 +5,20 @@ import { checkRateLimitAsync, getClientIp } from "@/lib/rate-limit"
 import { getRequestId } from "@/lib/request-id"
 
 const schema = z.object({
-  orderId: z.string().min(6),
+  orderId: z.string().min(6).max(64),
   phone: z.string().min(6),
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
 })
 
 function normalizePhoneDigits(v: string): string {
   return v.replace(/\D/g, "")
 }
 
-function normalizeName(v: string): string {
-  return v
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/\s+/g, " ")
-    .trim()
-    .toLowerCase()
-}
-
-type OrderStatus = "confirmée" | "préparation" | "expédiée" | "livrée"
+type OrderStatus = "confirmée" | "préparation" | "expédiée" | "livrée" | "annulée" | "remboursée"
 
 export async function POST(req: Request) {
   const requestId = getRequestId(req)
   const ip = getClientIp(req)
-  const rl = await checkRateLimitAsync({ key: `orders_track:${ip}`, limit: 18, windowMs: 60_000 })
+  const rl = await checkRateLimitAsync({ key: `orders_track:${ip}`, limit: 12, windowMs: 60_000 })
   if (!rl.allowed) {
     return NextResponse.json(
       { error: "Trop de tentatives. Réessayez plus tard." },
@@ -47,21 +36,32 @@ export async function POST(req: Request) {
   }
 
   const orderId = parsed.data.orderId.trim()
+  const orderIdLooksValid = /^MB-\d{13}-\d{3,6}$/.test(orderId)
+  if (!orderIdLooksValid) {
+    return NextResponse.json(
+      { error: "Données invalides" },
+      { status: 400, headers: { "x-request-id": requestId } },
+    )
+  }
+
+  const rlOrder = await checkRateLimitAsync({ key: `orders_track:${ip}:${orderId}`, limit: 4, windowMs: 60_000 })
+  if (!rlOrder.allowed) {
+    return NextResponse.json(
+      { error: "Trop de tentatives. Réessayez plus tard." },
+      { status: 429, headers: { "Retry-After": String(rlOrder.retryAfterSec), "x-request-id": requestId } },
+    )
+  }
+
   const phoneDigits = normalizePhoneDigits(parsed.data.phone)
   if (phoneDigits.length < 6) {
     return NextResponse.json({ error: "Téléphone invalide." }, { status: 400, headers: { "x-request-id": requestId } })
-  }
-  const firstName = normalizeName(parsed.data.firstName)
-  const lastName = normalizeName(parsed.data.lastName)
-  if (!firstName || !lastName) {
-    return NextResponse.json({ error: "Nom invalide." }, { status: 400, headers: { "x-request-id": requestId } })
   }
 
   const supabase = createServiceRoleClient()
   const { data, error } = await supabase
     .from("orders")
     .select(
-      "id, created_at, phone, first_name, last_name, status, total, delivery_fee, city, address, order_items (product_id, name, image, quantity, size, color, unit_price)",
+      "id, created_at, phone, status, total, delivery_fee, city, address, order_items (product_id, name, image, quantity, size, color, unit_price)",
     )
     .eq("id", orderId)
     .maybeSingle()
@@ -80,12 +80,6 @@ export async function POST(req: Request) {
       { error: "Commande introuvable." },
       { status: 404, headers: { "x-request-id": requestId } },
     )
-  }
-
-  const storedFirst = normalizeName(String((data as { first_name?: string | null }).first_name ?? ""))
-  const storedLast = normalizeName(String((data as { last_name?: string | null }).last_name ?? ""))
-  if (!storedFirst || !storedLast || storedFirst !== firstName || storedLast !== lastName) {
-    return NextResponse.json({ error: "Commande introuvable." }, { status: 404, headers: { "x-request-id": requestId } })
   }
 
   const status = String((data as { status?: string }).status ?? "") as OrderStatus

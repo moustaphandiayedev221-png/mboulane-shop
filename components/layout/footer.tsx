@@ -35,7 +35,6 @@ const footerLinks = {
     { name: "Retours & remboursements", href: "/politique-retours-remboursements" },
     { name: "FAQ", href: "/faq" },
     { name: "Paiement", href: "/paiement" },
-    { name: "Cookies", href: "/cookies" },
   ],
 }
 

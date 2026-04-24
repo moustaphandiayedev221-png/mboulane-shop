@@ -26,7 +26,7 @@ Les 3 pages obligatoires pour l'e-commerce ont été codées et intégrées dans
 ## 4. Traductions & UX Premium (Phases 4 & 5)
 - **Traduction** : L'entièreté du système de filtre et de tri de la Boutique a été traduite de l'Anglais vers le Français (Filter By -> Filtrer par, etc).
 - **Bandeau Promo** : Un `<PromoBanner />` a été rajouté en haut du layout offrant 10% de réduction (avec gestion `sessionStorage` pour pouvoir le fermer).
-- **Bannière Cookies** : Ajout du composant `<CookieConsent />` pour la RGPD avec un délai et sauvegarde d'acceptation dans le `localStorage`.
+- **Bannière Cookies** : Supprimée (pas de bandeau ni de consentement stocké).
 - **Toasts Sonner** : Remplacement des "alert()" natifs moches. Lorsqu'un article est ajouté au panier, une notification élégante apparaît. La bibliothèque est implémentée de manière globale dans `layout.tsx`.
 - **Progression Livraison Gratuite** : Intégration d'une barre de progression dynamique dans le `CartDrawer` qui calcule quand la livraison gratuite est débloquée (> 50.000 FCFA).
 - **Badges de Confiance** : Ajout des icônes sécurisées Visa, Mastercard, Wave et Orange Money dans le `Footer`.

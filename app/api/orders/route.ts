@@ -17,7 +17,7 @@ const orderItemSchema = z.object({
 })
 
 const createOrderSchema = z.object({
-  email: z.string().email(),
+  email: z.string().trim().optional().nullable(),
   firstName: z.string().min(1),
   lastName: z.string().min(1),
   phone: z.string().min(3),
@@ -73,10 +73,13 @@ export async function POST(req: Request) {
 
   const id = generateOrderId()
   const promoCode = parsed.data.promoCode?.trim().toUpperCase() || null
+  const phoneDigits = parsed.data.phone.replace(/\D/g, "")
+  const fallbackEmail = phoneDigits ? `client+${phoneDigits}@mboulane.local` : "client@mboulane.local"
+  const effectiveEmail = (parsed.data.email ?? "").trim() ? String(parsed.data.email).trim() : fallbackEmail
 
   const payload = {
     order_id: id,
-    email: parsed.data.email.trim(),
+    email: effectiveEmail,
     first_name: parsed.data.firstName.trim(),
     last_name: parsed.data.lastName.trim(),
     phone: parsed.data.phone.trim(),
@@ -153,7 +156,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Commande refusée", code }, { status: 400, headers: { "x-request-id": requestId } })
   }
 
-  const email = parsed.data.email.trim().toLowerCase()
+  const email = effectiveEmail.trim().toLowerCase()
   logInfo("orders.created", { id: res.id ?? id, ip, email, promoCode: promoCode ?? null }, requestId)
 
   return NextResponse.json({ id: res.id ?? id }, { headers: { "x-request-id": requestId } })

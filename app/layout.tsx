@@ -5,9 +5,7 @@ import './globals.css'
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { WhatsAppFloat } from "@/components/ui/whatsapp-float"
-import { CookieConsent } from "@/components/ui/cookie-consent"
 import { QuickViewManager } from "@/components/products/quick-view-manager"
-import { AnalyticsGate } from "@/components/ui/analytics-gate"
 import { SupabaseStoreSync } from "@/components/supabase-store-sync"
 
 const poppins = Poppins({ 
@@ -81,8 +79,6 @@ export default function RootLayout({
           <QuickViewManager />
           <Toaster />
           <WhatsAppFloat />
-          <CookieConsent />
-          <AnalyticsGate />
         </ThemeProvider>
       </body>
     </html>

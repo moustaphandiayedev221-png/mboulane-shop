@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { formatPrice } from "@/lib/store"
 import { createClient } from "@/lib/supabase/client"
 
-type OrderStatus = "confirmée" | "préparation" | "expédiée" | "livrée"
+type OrderStatus = "confirmée" | "préparation" | "expédiée" | "livrée" | "annulée" | "remboursée"
 
 type OrderItem = {
   product_id: string
@@ -35,6 +35,8 @@ const statusLabels: Record<OrderStatus, string> = {
   préparation: "En préparation",
   expédiée: "Expédiée",
   livrée: "Livrée",
+  annulée: "Annulée",
+  remboursée: "Remboursée",
 }
 
 export default function MesCommandesPage() {

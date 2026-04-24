@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 
-export type OrderStatus = "confirmée" | "préparation" | "expédiée" | "livrée"
+export type OrderStatus = "confirmée" | "préparation" | "expédiée" | "livrée" | "annulée" | "remboursée"
 
 export type AdminOrderItem = {
   product_id: string
@@ -43,6 +43,8 @@ const STATUS: { id: OrderStatus | "toutes"; label: string }[] = [
   { id: "préparation", label: "Préparation" },
   { id: "expédiée", label: "Expédiées" },
   { id: "livrée", label: "Livrées" },
+  { id: "annulée", label: "Annulées" },
+  { id: "remboursée", label: "Remboursées" },
 ]
 
 function formatFcfa(v: number) {
@@ -59,6 +61,10 @@ function statusStyle(status: OrderStatus) {
       return { label: "Expédiée", pill: "bg-violet-500/10 text-violet-800 border-violet-500/20" }
     case "livrée":
       return { label: "Livrée", pill: "bg-emerald-500/10 text-emerald-800 border-emerald-500/20" }
+    case "annulée":
+      return { label: "Annulée", pill: "bg-rose-500/10 text-rose-800 border-rose-500/20" }
+    case "remboursée":
+      return { label: "Remboursée", pill: "bg-slate-500/10 text-slate-200 border-slate-500/20" }
   }
 }
 
@@ -71,6 +77,10 @@ function StatusIcon({ status }: { status: OrderStatus }) {
     case "expédiée":
       return <Truck className="h-4 w-4" />
     case "livrée":
+      return <CheckCircle2 className="h-4 w-4" />
+    case "annulée":
+      return <Clock className="h-4 w-4" />
+    case "remboursée":
       return <CheckCircle2 className="h-4 w-4" />
   }
 }
@@ -112,6 +122,8 @@ export function AdminOrdersClient({
       préparation: orders.filter((o) => o.status === "préparation").length,
       expédiée: orders.filter((o) => o.status === "expédiée").length,
       livrée: orders.filter((o) => o.status === "livrée").length,
+      annulée: orders.filter((o) => o.status === "annulée").length,
+      remboursée: orders.filter((o) => o.status === "remboursée").length,
     }
     return { total, counts }
   }, [orders])
@@ -333,7 +345,7 @@ export function AdminOrdersClient({
                   <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/45">Statut</p>
 
                   <div className="mt-3 grid grid-cols-2 gap-2">
-                    {(["confirmée", "préparation", "expédiée", "livrée"] as OrderStatus[]).map((st) => {
+                    {(["confirmée", "préparation", "expédiée", "livrée", "annulée", "remboursée"] as OrderStatus[]).map((st) => {
                       const active = selected.status === st
                       const busy = saving?.id === selected.id && saving.status === st
                       return (

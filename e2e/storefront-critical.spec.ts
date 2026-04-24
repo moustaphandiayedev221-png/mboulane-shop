@@ -1,11 +1,5 @@
 import { test, expect } from "@playwright/test"
 
-test.beforeEach(async ({ page }) => {
-  await page.addInitScript(() => {
-    window.localStorage.setItem("cookie-consent", "accepted")
-  })
-})
-
 test("le header invite renvoie vers la connexion", async ({ page }) => {
   await page.goto("/")
   await expect(page.locator('a[title="Connexion"]').first()).toHaveAttribute("href", "/connexion")
