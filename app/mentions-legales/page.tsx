@@ -32,7 +32,7 @@ export default function MentionsLegalesPage() {
                 <br />
                 Email : mboulaneshop@gmail.com
                 <br />
-                Téléphone : +221 77 23 93 05
+                Téléphone : +221 77 923 93 05
               </p>
             </div>
             <div className="h-px bg-gradient-to-r from-transparent via-[#d8ccb8]/80 to-transparent" />

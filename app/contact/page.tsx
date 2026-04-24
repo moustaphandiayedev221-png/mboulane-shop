@@ -26,7 +26,7 @@ const contactInfo = [
   {
     icon: Phone,
     title: "Téléphone",
-    content: "+221 77 23 93 05",
+    content: "+221 77 923 93 05",
     detail: "Lun–Sam : 9h–19h",
   },
   {
@@ -143,7 +143,7 @@ export default function ContactPage() {
                   Pour une réponse plus rapide, écrivez-nous directement sur WhatsApp.
                 </p>
                 <Button className="w-full bg-[#25D366] text-white hover:bg-[#20BD5A]" asChild>
-                  <a href="https://wa.me/22177239305" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/221779239305" target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="mr-2 h-4 w-4" />
                     Discuter sur WhatsApp
                   </a>

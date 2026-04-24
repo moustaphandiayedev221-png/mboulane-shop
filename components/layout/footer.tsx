@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Facebook, Instagram, MapPin, Phone, Mail, Youtube, ArrowUpRight, ShieldCheck, Footprints } from "lucide-react"
 
 function TikTokIcon(props: React.SVGProps<SVGSVGElement>) {
@@ -71,7 +72,7 @@ export function Footer() {
               </div>
               <div className="flex items-center gap-3 text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors duration-300">
                 <Phone className="h-4 w-4 flex-shrink-0 text-primary-foreground/50" />
-                <span>+221 77 23 93 05</span>
+                <span>+221 77 923 93 05</span>
               </div>
               <div className="flex items-center gap-3 text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors duration-300">
                 <Mail className="h-4 w-4 flex-shrink-0 text-primary-foreground/50" />
@@ -166,18 +167,22 @@ export function Footer() {
              Paiement 100% Sécurisé
           </div>
           <div className="flex flex-wrap gap-3 items-center">
-            <span className="px-3 py-1.5 bg-[#FF7900] text-white text-xs font-extrabold rounded shadow-sm">
-              ORANGE MONEY
-            </span>
-            <span className="px-3 py-1.5 bg-[#2C2D72] text-white text-xs font-extrabold rounded shadow-sm tracking-wider">
-              WAVE
-            </span>
-            <span
-              className="px-3 py-1.5 bg-primary-foreground/15 text-primary-foreground/85 text-xs font-semibold rounded shadow-sm border border-primary-foreground/15"
-              title="Pas de prélèvement carte sur le site ; demande étudiée au cas par cas"
-            >
-              Carte (sur demande)
-            </span>
+            <div className="flex items-center gap-3 rounded-xl bg-primary-foreground/5 px-3 py-2">
+              <Image
+                src="/payments/orange-money.png"
+                alt="Orange Money"
+                width={150}
+                height={40}
+                className="h-7 w-auto"
+              />
+              <Image
+                src="/payments/wave.png"
+                alt="Wave"
+                width={110}
+                height={40}
+                className="h-7 w-auto"
+              />
+            </div>
           </div>
         </div>
 

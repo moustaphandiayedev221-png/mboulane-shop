@@ -10,8 +10,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useStore, formatPrice } from "@/lib/store"
-import { 
-  ChevronLeft, 
+import {
+  ChevronLeft,
   ChevronRight,
   CreditCard,
   Truck,
@@ -20,12 +20,12 @@ import {
   Loader2,
   MapPin,
   User,
-  ShoppingBag
+  ShoppingBag,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { buildWhatsAppUrl } from "@/lib/whatsapp"
 
-type PaymentMethod = "cash_on_delivery" | "paytech"
+type PaymentMethod = "cash_on_delivery"
 
 const paymentMethods = [
   {
@@ -33,12 +33,6 @@ const paymentMethods = [
     name: "Paiement à la livraison",
     icon: Truck,
     description: "Vous payez au livreur lors de la réception.",
-  },
-  {
-    id: "paytech" as PaymentMethod,
-    name: "Paiement en ligne (PayTech)",
-    icon: CreditCard,
-    description: "Payez en ligne via PayTech (Orange Money, Wave, carte…).",
   },
 ]
 
@@ -75,6 +69,7 @@ export default function CheckoutPage() {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
+    email: "",
     phone: "",
     address: "",
     city: "Dakar",
@@ -82,8 +77,9 @@ export default function CheckoutPage() {
     paymentMethod: "cash_on_delivery" as PaymentMethod,
   })
 
-  const normalizedPhone = formData.phone.replace(/[^\d+]/g, "")
-  const derivedEmail = normalizedPhone ? `client+${normalizedPhone.replace(/[^\d]/g, "")}@mboulane.local` : ""
+  const normalizedPhoneDigits = formData.phone.replace(/\D/g, "")
+  const fallbackEmail = normalizedPhoneDigits ? `client+${normalizedPhoneDigits}@mboulane.local` : "client@mboulane.local"
+  const effectiveEmail = formData.email.trim() ? formData.email.trim().toLowerCase() : fallbackEmail
 
   useEffect(() => {
     setHydrated(true)
@@ -175,6 +171,7 @@ export default function CheckoutPage() {
       if (formData.firstName.trim() || formData.lastName.trim()) {
         lines.push(`Nom : ${formData.firstName.trim()} ${formData.lastName.trim()}`.trim())
       }
+      if (formData.email.trim()) lines.push(`Email : ${formData.email.trim()}`)
       if (formData.phone.trim()) lines.push(`Téléphone : ${formData.phone.trim()}`)
       lines.push("")
     }
@@ -203,10 +200,10 @@ export default function CheckoutPage() {
 
     try {
       const payload = {
-        email: derivedEmail.toLowerCase(),
+        email: effectiveEmail,
         firstName: formData.firstName.trim(),
         lastName: formData.lastName.trim(),
-        phone: normalizedPhone,
+        phone: formData.phone.trim(),
         address: formData.address.trim(),
         city: formData.city,
         notes: formData.notes.trim() || null,
@@ -225,32 +222,6 @@ export default function CheckoutPage() {
           color: item.color,
           unitPrice: item.product.price,
         })),
-      }
-
-      if (formData.paymentMethod === "paytech") {
-        const res = await fetch("/api/paytech/request-payment", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        })
-
-        if (!res.ok) {
-          const data = (await res.json().catch(() => null)) as { error?: string } | null
-          setSubmitError(data?.error || "Impossible d'initier le paiement PayTech. Réessayez.")
-          setIsSubmitting(false)
-          return
-        }
-
-        const data = (await res.json()) as { redirectUrl?: string }
-        const redirectUrl = data.redirectUrl?.trim()
-        if (!redirectUrl) {
-          setSubmitError("Paiement PayTech indisponible. Réessayez.")
-          setIsSubmitting(false)
-          return
-        }
-
-        window.location.assign(redirectUrl)
-        return
       }
 
       const res = await fetch("/api/orders", {
@@ -386,15 +357,7 @@ export default function CheckoutPage() {
                   asChild
                   className="h-14 w-full rounded-full text-lg font-semibold shadow-[0_12px_36px_rgba(179,139,109,0.28)] transition-all hover:scale-[1.02]"
                 >
-                  <Link
-                    href={
-                      completedOrderId
-                        ? `/suivi-commande?order=${encodeURIComponent(completedOrderId)}&phone=${encodeURIComponent(normalizedPhone)}`
-                        : "/suivi-commande"
-                    }
-                  >
-                    Suivre ma commande
-                  </Link>
+                  <Link href="/mes-commandes">Voir mes commandes</Link>
                 </Button>
                 <Button
                   asChild
@@ -490,6 +453,19 @@ export default function CheckoutPage() {
                       <div className="space-y-2">
                         <Label htmlFor="lastName" className="text-xs uppercase tracking-widest font-bold text-muted-foreground">Nom</Label>
                         <Input id="lastName" name="lastName" value={formData.lastName} onChange={handleInputChange} required className="h-14 border-[#e8e2d8] bg-white focus-visible:ring-[#b38b6d]/30" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="email" className="text-xs uppercase tracking-widest font-bold text-muted-foreground">
+                          Email (optionnel)
+                        </Label>
+                        <Input
+                          id="email"
+                          name="email"
+                          type="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          className="h-14 border-[#e8e2d8] bg-white focus-visible:ring-[#b38b6d]/30"
+                        />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="phone" className="text-xs uppercase tracking-widest font-bold text-muted-foreground">Téléphone</Label>
@@ -682,7 +658,7 @@ export default function CheckoutPage() {
                           className="object-cover"
                           sizes="80px"
                         />
-                        <span className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-[#b38b6d] text-[11px] font-bold text-white shadow-sm">
+                        <span className="absolute -right-1 -top-1 z-[1] flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-[#b38b6d] text-[11px] font-bold text-white shadow-sm">
                           {item.quantity}
                         </span>
                       </div>

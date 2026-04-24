@@ -78,7 +78,7 @@ export function WhatsAppFloat() {
             tapPulse && "animate-whatsapp-nudge",
           )}
           aria-label="Discuter sur WhatsApp — Contactez un conseiller"
-          title="WhatsApp +221 77 23 93 05"
+          title="WhatsApp +221 77 923 93 05"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

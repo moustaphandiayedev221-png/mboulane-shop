@@ -35,7 +35,7 @@ export default function ServiceClientPage() {
                 commande.
               </p>
               <a
-                href="https://wa.me/22177239305"
+                href="https://wa.me/221779239305"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-5 inline-flex items-center justify-center rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#20BD5A]"
@@ -68,7 +68,7 @@ export default function ServiceClientPage() {
                 <Phone className="h-5 w-5" style={{ color: BRONZE }} />
                 <h2 className="font-serif text-lg font-semibold text-[#3d3429]">Téléphone</h2>
               </div>
-              <p className="text-sm font-light leading-relaxed text-[#6b5d4f]">+221 77 23 93 05</p>
+              <p className="text-sm font-light leading-relaxed text-[#6b5d4f]">+221 77 923 93 05</p>
             </LuxuryPanel>
 
             <LuxuryPanel>
