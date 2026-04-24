@@ -94,7 +94,7 @@ export async function CollectionsSection() {
         <LuxuryScriptHeading title="Nos Collections" />
 
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-7 lg:grid-cols-4 lg:gap-6">
-          {rows.map((c) => {
+          {rows.map((c, idx) => {
             const canonical = c.label as HomeCollectionLabel
             const href = `/boutique?category=${encodeURIComponent(canonical)}`
             const imgSrc =
@@ -124,6 +124,8 @@ export async function CollectionsSection() {
                           src={imgSrc}
                           alt={canonical}
                           fill
+                          priority={idx === 0}
+                          loading={idx === 0 ? "eager" : "lazy"}
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                           className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                         />

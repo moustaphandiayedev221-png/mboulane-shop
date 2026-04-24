@@ -6,7 +6,7 @@ import { TrackerForm } from "./tracker-form"
 
 export const metadata: Metadata = {
   title: "Suivi de commande | MBOULANE SHOP",
-  description: "Suivez votre commande MBOULANE SHOP avec votre numéro de commande et votre email.",
+  description: "Suivez votre commande MBOULANE SHOP avec votre numéro de commande et votre téléphone.",
 }
 
 export default function SuiviCommandePage() {
@@ -17,7 +17,7 @@ export default function SuiviCommandePage() {
       <LuxuryHero
         breadcrumbs={[{ label: "Accueil", href: "/" }, { label: "Suivi de commande" }]}
         scriptTitle="Suivi de commande"
-        subtitle="Entrez votre numéro de commande et votre e-mail pour retrouver l’état de livraison."
+        subtitle="Entrez votre numéro de commande et votre téléphone pour retrouver l’état de livraison."
       />
 
       <section className="pb-16 pt-4 md:pb-24">

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
@@ -8,12 +8,34 @@ import { MousePointer2 } from "lucide-react"
 import type { HeroContent } from "@/lib/site/hero"
 
 export function HeroSection({ hero }: { hero: HeroContent }) {
-  const [scrollY, setScrollY] = useState(0)
+  const imgRef = useRef<HTMLImageElement | null>(null)
+  const rafRef = useRef<number | null>(null)
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY)
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    const reduced =
+      typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches
+    if (reduced) return
+
+    const isCoarse = typeof window !== "undefined" && window.matchMedia?.("(pointer: coarse)")?.matches
+    if (isCoarse) return
+
+    const onScroll = () => {
+      if (rafRef.current) return
+      rafRef.current = window.requestAnimationFrame(() => {
+        rafRef.current = null
+        const y = window.scrollY || 0
+        const el = imgRef.current
+        if (el) el.style.transform = `translate3d(0, ${y * 0.3}px, 0)`
+      })
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true })
+    onScroll()
+    return () => {
+      window.removeEventListener("scroll", onScroll)
+      if (rafRef.current) window.cancelAnimationFrame(rafRef.current)
+      rafRef.current = null
+    }
   }, [])
 
   const title = hero.title
@@ -31,8 +53,8 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center"
-          style={{ transform: `translateY(${scrollY * 0.3}px)` }}
+          className="object-cover object-center will-change-transform"
+          ref={imgRef}
         />
         <div className="absolute inset-0 bg-black/20" />
       </div>

@@ -26,7 +26,7 @@ export default async function PaytechSuccessPage(props: { searchParams: Promise<
             ) : null}
             <div className="space-y-4">
               <Button asChild className="h-14 w-full rounded-full text-lg font-semibold shadow-[0_12px_36px_rgba(179,139,109,0.28)]">
-                <Link href="/mes-commandes">Voir mes commandes</Link>
+                <Link href="/suivi-commande">Suivre ma commande</Link>
               </Button>
               <Button
                 asChild
