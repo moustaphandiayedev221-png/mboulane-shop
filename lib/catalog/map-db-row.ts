@@ -8,6 +8,7 @@ export type ProductRow = {
   original_price?: number | string | null
   image: string
   images: string[]
+  home_section?: string | null
   description: string
   category: string
   sizes: number[]
@@ -16,6 +17,14 @@ export type ProductRow = {
   badge?: string | null
   rating: number | string
   review_count: number | string
+}
+
+function normalizeHomeSection(v: unknown): Product["homeSection"] | undefined {
+  if (v === "best_sellers") return "best_sellers"
+  if (v === "premium_luxe") return "premium_luxe"
+  if (v === "nouveautes") return "nouveautes"
+  if (v === "collection_artisanale") return "collection_artisanale"
+  return undefined
 }
 
 export function mapRowToProduct(row: ProductRow): Product {
@@ -29,6 +38,7 @@ export function mapRowToProduct(row: ProductRow): Product {
         : undefined,
     image: row.image,
     images: Array.isArray(row.images) ? row.images : [],
+    homeSection: normalizeHomeSection(row.home_section),
     description: row.description,
     category: row.category,
     sizes: Array.isArray(row.sizes) ? row.sizes.map(Number) : [],

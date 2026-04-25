@@ -13,9 +13,9 @@ export function BestSellersSection({
 }: {
   products?: Product[]
 }) {
-  const bestSellers = products
-    .filter((p) => p.badge === "Best Seller" || p.rating >= 4.8)
-    .slice(0, 8)
+  const explicit = products.filter((p) => p.homeSection === "best_sellers")
+  const fallback = products.filter((p) => p.badge === "Best Seller" || p.rating >= 4.8)
+  const bestSellers = [...explicit, ...fallback.filter((p) => !explicit.some((e) => e.id === p.id))].slice(0, 8)
 
   return (
     <LuxuryProductGridSection

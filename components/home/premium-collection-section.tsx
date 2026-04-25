@@ -170,9 +170,9 @@ export function PremiumCollectionSection({
 }: {
   products: Product[]
 }) {
-  const premiumProducts = products
-    .filter((p) => p.category === "Premium" || p.price >= 38000)
-    .slice(0, 4)
+  const explicit = products.filter((p) => p.homeSection === "premium_luxe")
+  const fallback = products.filter((p) => p.category === "Premium" || p.price >= 38000)
+  const premiumProducts = [...explicit, ...fallback.filter((p) => !explicit.some((e) => e.id === p.id))].slice(0, 4)
 
   return (
     <section

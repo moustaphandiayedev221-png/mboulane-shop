@@ -25,14 +25,16 @@ export function ArtisanalCollectionSection({
   products?: Product[]
   content: ArtisanalHomeContent
 }) {
-  const artisanalProducts = [
+  const explicit = products.filter((p) => p.homeSection === "collection_artisanale")
+  const fallback = [
     ...products.filter(
       (p) => p.category === "Artisanal & Unique" || p.badge === "Édition Limitée",
     ),
     ...products.filter(
       (p) => p.category !== "Artisanal & Unique" && p.badge !== "Édition Limitée",
     ),
-  ].slice(0, 4)
+  ]
+  const artisanalProducts = [...explicit, ...fallback.filter((p) => !explicit.some((e) => e.id === p.id))].slice(0, 4)
 
   const bullets = content.bullets
 

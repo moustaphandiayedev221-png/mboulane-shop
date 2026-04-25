@@ -13,14 +13,16 @@ export function NewArrivalsSection({
 }: {
   products?: Product[]
 }) {
-  const newArrivals = [
+  const explicit = products.filter((p) => p.homeSection === "nouveautes")
+  const fallback = [
     ...products.filter((p) => p.badge === "Nouveau"),
     ...products.filter(
       (p) =>
         ["1", "2", "3", "4", "5", "6", "7", "8"].includes(p.id) &&
         p.badge !== "Nouveau",
     ),
-  ].slice(0, 8)
+  ]
+  const newArrivals = [...explicit, ...fallback.filter((p) => !explicit.some((e) => e.id === p.id))].slice(0, 8)
 
   return (
     <LuxuryProductGridSection

@@ -12,6 +12,10 @@ const productSchema = z.object({
   images: z.array(z.string()).default([]),
   image_storage_path: z.string().optional().nullable(),
   images_storage_paths: z.array(z.string()).default([]),
+  home_section: z
+    .enum(["best_sellers", "premium_luxe", "nouveautes", "collection_artisanale"])
+    .optional()
+    .nullable(),
   color_variants: z
     .array(
       z.object({

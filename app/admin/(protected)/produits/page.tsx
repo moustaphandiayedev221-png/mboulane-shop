@@ -18,6 +18,7 @@ type ProductRow = {
   images: string[]
   image_storage_path?: string | null
   images_storage_paths?: string[]
+  home_section?: string | null
   color_variants?: Array<{
     color: string
     images: string[]
@@ -46,6 +47,7 @@ const empty: ProductRow = {
   images: [],
   image_storage_path: null,
   images_storage_paths: [],
+  home_section: null,
   color_variants: [],
   description: "",
   category: "",
@@ -384,6 +386,24 @@ export default function AdminProductsPage() {
                       {c.label}
                     </option>
                   ))}
+              </select>
+            </Field>
+            <Field label="Section accueil (optionnel)">
+              <select
+                value={editing.home_section ?? ""}
+                onChange={(e) =>
+                  setEditing((s) => ({
+                    ...s,
+                    home_section: e.target.value ? e.target.value : null,
+                  }))
+                }
+                className="h-11 w-full rounded-xl border border-white/10 bg-black/20 px-3 text-sm text-white outline-none"
+              >
+                <option value="">Aucune (ne pas forcer sur l’accueil)</option>
+                <option value="best_sellers">Best sellers</option>
+                <option value="premium_luxe">Premium et luxe</option>
+                <option value="nouveautes">Nouveautés</option>
+                <option value="collection_artisanale">Collection artisanale</option>
               </select>
             </Field>
             <div className="md:col-span-2">
