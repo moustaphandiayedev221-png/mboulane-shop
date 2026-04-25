@@ -33,6 +33,7 @@ import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 import { getSiteBaseUrl } from "@/lib/site/base-url"
 import { buildWhatsAppUrl } from "@/lib/whatsapp"
+import { ProductReviews } from "./product-reviews.client"
 
 const SURFACE = {
   backgroundColor: "#F7F3EC",
@@ -653,6 +654,8 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
           </div>
         </section>
       )}
+
+      <ProductReviews productId={product.id} initialRating={product.rating} initialCount={product.reviews} />
 
       <Footer />
     </main>

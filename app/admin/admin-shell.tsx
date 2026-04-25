@@ -31,6 +31,7 @@ const NAV = [
   { href: "/admin/hero", label: "Hero", icon: ImageIcon },
   { href: "/admin/clients", label: "Clients", icon: Users },
   { href: "/admin/avis", label: "Avis", icon: Star },
+  { href: "/admin/avis-produits", label: "Avis produits", icon: Star },
   { href: "/admin/newsletter", label: "Newsletter", icon: Mail },
   { href: "/admin/promotions", label: "Promotions", icon: BadgePercent },
   { href: "/admin/contenu", label: "Contenu", icon: FileText },
