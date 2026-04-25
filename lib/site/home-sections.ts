@@ -80,7 +80,7 @@ export const DEFAULT_WHY_CHOOSE_HOME: WhyChooseHomeContent = {
       icon: "truck",
       title: "Livraison Rapide",
       description:
-        "Livraison en 1 à 2 jours ouvrables à Dakar et dans toutes les régions du Sénégal. Expédition internationale disponible.",
+        "Livraison sous 24h à Dakar et dans toutes les régions du Sénégal. Expédition internationale disponible.",
     },
     {
       icon: "heart",

@@ -42,7 +42,7 @@ export default function LivraisonPage() {
               <ul className="space-y-2 text-sm font-light text-[#6b5d4f]">
                 <li className="flex items-center gap-2">
                   <Clock className="h-4 w-4 shrink-0" style={{ color: BRONZE }} />
-                  <strong className="font-semibold text-[#4a4036]">Délai :</strong> 24 h à 48 h ouvrés
+                  <strong className="font-semibold text-[#4a4036]">Délai :</strong> sous 24h
                 </li>
                 <li className="flex items-center gap-2">
                   <Package className="h-4 w-4 shrink-0" style={{ color: BRONZE }} />

@@ -602,7 +602,7 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
                       Livraison express
                     </h4>
                     <p className="text-sm font-light leading-relaxed text-[#6b5d4f]">
-                      Sous 1 à 2 jours ouvrables à Dakar, gratuite dès 50 000 FCFA
+                      Sous 24h à Dakar, gratuite dès 50 000 FCFA
                     </p>
                   </div>
                 </div>
