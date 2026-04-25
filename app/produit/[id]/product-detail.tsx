@@ -235,8 +235,8 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
                   alt={product.name}
                   fill
                   className={cn(
-                    "object-cover transition-transform duration-500",
-                    isZoomed && "scale-150",
+                    isZoomed ? "object-cover scale-150 cursor-zoom-out" : "object-contain cursor-zoom-in",
+                    "transition-transform duration-500",
                   )}
                   priority
                 />

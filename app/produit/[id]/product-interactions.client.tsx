@@ -149,7 +149,10 @@ export function ProductInteractions({ product }: { product: Product }) {
             alt={product.name}
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
-            className={cn("object-cover transition-transform duration-500", isZoomed && "scale-150")}
+            className={cn(
+              isZoomed ? "object-cover scale-150 cursor-zoom-out" : "object-contain cursor-zoom-in",
+              "transition-transform duration-500",
+            )}
             priority
           />
 
