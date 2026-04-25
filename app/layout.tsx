@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { WhatsAppFloat } from "@/components/ui/whatsapp-float"
 import { QuickViewManager } from "@/components/products/quick-view-manager"
 import { SupabaseStoreSync } from "@/components/supabase-store-sync"
+import { VisitTracker } from "@/components/analytics/visit-tracker"
 
 const poppins = Poppins({ 
   subsets: ["latin"],
@@ -75,6 +76,7 @@ export default function RootLayout({
       <body className={`${poppins.variable} ${playfair.variable} ${greatVibes.variable} font-sans antialiased bg-background bg-mesh`} suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light" enableSystem={false} disableTransitionOnChange>
           {children}
+          <VisitTracker />
           <SupabaseStoreSync />
           <QuickViewManager />
           <Toaster />

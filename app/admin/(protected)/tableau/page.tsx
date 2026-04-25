@@ -2,6 +2,7 @@ import { createServiceRoleClient } from "@/lib/supabase/admin"
 import { assertAdmin } from "@/lib/admin/auth"
 import { TrendingUp, ShoppingCart, Users, BadgePercent } from "lucide-react"
 import { DashboardCharts } from "../dashboard-charts"
+import { VisitorsChart } from "@/components/admin/visitors-chart"
 
 type OrderRow = {
   id: string
@@ -217,6 +218,7 @@ export default async function AdminDashboardPage() {
           </div>
 
           <DashboardCharts series={stats.series30d} />
+          <VisitorsChart />
 
           <div className="rounded-2xl border border-white/10 bg-white/5 p-5 shadow-[0_18px_60px_rgba(0,0,0,0.35)] backdrop-blur">
             <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/45">Dernières commandes</p>
