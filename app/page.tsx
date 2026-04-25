@@ -2,10 +2,7 @@ import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { HeroSection } from "@/components/home/hero-section"
 import { CollectionsSection } from "@/components/home/collections-section"
-import { BestSellersSection } from "@/components/home/bestsellers-section"
-import { NewArrivalsSection } from "@/components/home/new-arrivals-section"
-import { PremiumCollectionSection } from "@/components/home/premium-collection-section"
-import { ArtisanalCollectionSection } from "@/components/home/artisanal-collection-section"
+import { HomeProductsLive } from "@/components/home/home-products-live"
 import { WhyChooseSection } from "@/components/home/why-choose-section"
 import { ReviewsSection } from "@/components/home/reviews-section"
 import { NewsletterSection } from "@/components/home/newsletter-section"
@@ -33,22 +30,8 @@ export default async function HomePage() {
       <ScrollReveal animation="blur-in">
         <CollectionsSection />
       </ScrollReveal>
-      
-      <ScrollReveal animation="slide-up" delay={100} threshold={0.1}>
-        <BestSellersSection products={products} />
-      </ScrollReveal>
-      
-      <ScrollReveal animation="slide-up" threshold={0.15}>
-        <PremiumCollectionSection products={products} />
-      </ScrollReveal>
-      
-      <ScrollReveal animation="blur-in" threshold={0.1}>
-        <NewArrivalsSection products={products} />
-      </ScrollReveal>
-      
-      <ScrollReveal animation="blur-in" threshold={0.15}>
-        <ArtisanalCollectionSection products={products} content={artisanalContent} />
-      </ScrollReveal>
+
+      <HomeProductsLive initialProducts={products} artisanalContent={artisanalContent} />
       
       <ScrollReveal animation="scale-up" threshold={0.2}>
         <WhyChooseSection content={whyChooseContent} />
