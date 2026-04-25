@@ -227,7 +227,7 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
             {/* Galerie */}
             <div className="space-y-4">
               <div
-                className="relative aspect-[9/10] cursor-zoom-in overflow-hidden rounded-[5px] border border-[#d8ccb8] bg-white shadow-[0_14px_44px_rgba(0,0,0,0.06)] transition-shadow duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]"
+                className="relative aspect-[4/5] cursor-zoom-in overflow-hidden rounded-[5px] border border-[#d8ccb8] bg-white shadow-[0_14px_44px_rgba(0,0,0,0.06)] transition-shadow duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]"
                 onClick={() => setIsZoomed(!isZoomed)}
               >
                 <Image
@@ -628,7 +628,7 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
         <section className="border-t border-[#e5dfd4]/90 bg-white/75 py-16 backdrop-blur-[2px] md:py-20">
           <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
             <LuxuryScriptHeading title="Récemment vus" />
-            <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 lg:gap-8">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
               {recentlyViewedProducts.map((p) => (
                 <ProductCard key={p.id} product={p} variant="luxury" />
               ))}

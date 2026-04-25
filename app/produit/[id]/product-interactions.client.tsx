@@ -141,7 +141,7 @@ export function ProductInteractions({ product }: { product: Product }) {
     <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
       <div className="space-y-4">
         <div
-          className="relative aspect-[9/10] cursor-zoom-in overflow-hidden rounded-[5px] border border-[#d8ccb8] bg-white shadow-[0_14px_44px_rgba(0,0,0,0.06)] transition-shadow duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]"
+          className="relative aspect-[4/5] cursor-zoom-in overflow-hidden rounded-[5px] border border-[#d8ccb8] bg-white shadow-[0_14px_44px_rgba(0,0,0,0.06)] transition-shadow duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]"
           onClick={() => setIsZoomed(!isZoomed)}
         >
           <Image
