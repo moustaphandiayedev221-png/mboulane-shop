@@ -226,7 +226,7 @@ export function ProductCard({
 
             <Link
               href={`/produit/${product.id}`}
-              className="absolute inset-0 z-[5] transition-opacity duration-300 group-hover/card:pointer-events-none group-hover/card:opacity-0"
+              className="absolute inset-0 z-[5] transition-opacity duration-300 md:group-hover/card:pointer-events-none md:group-hover/card:opacity-0"
               aria-label={`Voir ${product.name}`}
             >
               <span className="sr-only">Voir la fiche produit</span>
@@ -252,7 +252,8 @@ export function ProductCard({
               />
             </button>
 
-            <div className="absolute inset-0 z-20 flex items-center justify-center gap-3 bg-black/0 opacity-0 transition-all duration-300 group-hover/card:bg-black/25 group-hover/card:opacity-100">
+            {/* Actions overlay: desktop uniquement (mobile = clic direct sur la carte) */}
+            <div className="absolute inset-0 z-20 hidden items-center justify-center gap-3 bg-black/0 opacity-0 transition-all duration-300 md:flex md:group-hover/card:bg-black/25 md:group-hover/card:opacity-100">
               <button
                 type="button"
                 onClick={handleQuickView}
@@ -329,7 +330,7 @@ export function ProductCard({
 
           <Link
             href={`/produit/${product.id}`}
-            className="absolute inset-0 z-[5] transition-opacity duration-500 group-hover:pointer-events-none group-hover:opacity-0"
+            className="absolute inset-0 z-[5] transition-opacity duration-500 md:group-hover:pointer-events-none md:group-hover:opacity-0"
             aria-label={`Voir ${product.name}`}
           >
             <span className="sr-only">Voir la fiche produit</span>
@@ -355,7 +356,8 @@ export function ProductCard({
             />
           </button>
 
-          <div className="absolute inset-0 z-20 flex items-center justify-center gap-3 bg-black/40 opacity-0 backdrop-blur-[2px] transition-all duration-500 group-hover:opacity-100">
+          {/* Actions overlay: desktop uniquement (mobile = clic direct sur la carte) */}
+          <div className="absolute inset-0 z-20 hidden items-center justify-center gap-3 bg-black/40 opacity-0 backdrop-blur-[2px] transition-all duration-500 md:flex md:group-hover:opacity-100">
             <button
               type="button"
               onClick={handleQuickView}
