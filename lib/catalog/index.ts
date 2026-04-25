@@ -34,8 +34,8 @@ async function fetchProductsFromSupabase(): Promise<Product[]> {
 
 const getProductsCached = unstable_cache(
   async () => await fetchProductsFromSupabase(),
-  ["catalog.products.v1"],
-  { revalidate: 300 },
+  ["catalog.products.v2"],
+  { revalidate: 300, tags: ["catalog.products"] },
 )
 
 export async function getProducts(): Promise<Product[]> {

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { z } from "zod"
 import { createServiceRoleClient } from "@/lib/supabase/admin"
 import { assertAdmin } from "@/lib/admin/auth"
+import { revalidatePath, revalidateTag } from "next/cache"
 
 const productSchema = z.object({
   id: z.string().min(1),
@@ -67,6 +68,11 @@ export async function POST(req: Request) {
   const admin = createServiceRoleClient()
   const { error } = await admin.from("products").upsert(parsed.data, { onConflict: "id" })
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+  revalidateTag("catalog.products", "page")
+  revalidatePath("/")
+  revalidatePath("/boutique")
+
   return NextResponse.json({ ok: true })
 }
 
