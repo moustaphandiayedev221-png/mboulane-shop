@@ -59,17 +59,33 @@ export function ProductInteractions({ product }: { product: Product }) {
     setIsZoomed(false)
   }, [product.id])
 
+  useEffect(() => {
+    if ((product.sizes ?? []).length === 1) setSelectedSize(product.sizes[0] ?? null)
+    if ((product.colors ?? []).length === 1) setSelectedColor(product.colors[0] ?? null)
+  }, [product.id, product.sizes, product.colors])
+
   const inWishlist = mounted ? isInWishlist(product.id) : false
 
   const nextImage = () => setSelectedImage((prev) => (prev + 1) % galleryImages.length)
   const prevImage = () => setSelectedImage((prev) => (prev - 1 + galleryImages.length) % galleryImages.length)
 
   const handleAddToCart = () => {
-    if (!selectedSize || !selectedColor) {
-      toast.error("Veuillez sélectionner une taille et une couleur")
+    const needsSize = (product.sizes ?? []).length > 0
+    const needsColor = (product.colors ?? []).length > 0
+    if (needsSize && selectedSize == null) {
+      toast.error("Veuillez sélectionner une taille")
       return
     }
-    addToCart({ product, quantity, size: selectedSize, color: selectedColor })
+    if (needsColor && !selectedColor) {
+      toast.error("Veuillez sélectionner une couleur")
+      return
+    }
+    addToCart({
+      product,
+      quantity,
+      size: needsSize ? (selectedSize as number) : 0,
+      color: needsColor ? String(selectedColor) : "",
+    })
     toast.success(`${product.name} ajouté au panier !`)
     setCartOpen(true)
   }
@@ -85,8 +101,14 @@ export function ProductInteractions({ product }: { product: Product }) {
   }
 
   const handleWhatsAppOrder = () => {
-    if (!selectedSize || !selectedColor) {
-      toast.error("Veuillez sélectionner une taille et une couleur")
+    const needsSize = (product.sizes ?? []).length > 0
+    const needsColor = (product.colors ?? []).length > 0
+    if (needsSize && selectedSize == null) {
+      toast.error("Veuillez sélectionner une taille")
+      return
+    }
+    if (needsColor && !selectedColor) {
+      toast.error("Veuillez sélectionner une couleur")
       return
     }
     const imagePath = galleryImages[selectedImage] ?? product.image
@@ -109,8 +131,8 @@ export function ProductInteractions({ product }: { product: Product }) {
       `Référence : ${product.id}`,
       `Prix unitaire : ${unitPrice}`,
       `Quantité : ${quantity}`,
-      `Taille : ${selectedSize}`,
-      `Couleur : ${selectedColor}`,
+      ...(needsSize ? [`Taille : ${selectedSize}`] : []),
+      ...(needsColor ? [`Couleur : ${selectedColor}`] : []),
       "",
       `Total estimé : ${lineTotal}`,
       "",

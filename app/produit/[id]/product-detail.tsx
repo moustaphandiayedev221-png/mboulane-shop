@@ -89,6 +89,11 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
     }
   }, [product.id])
 
+  useEffect(() => {
+    if ((product.sizes ?? []).length === 1) setSelectedSize(product.sizes[0] ?? null)
+    if ((product.colors ?? []).length === 1) setSelectedColor(product.colors[0] ?? null)
+  }, [product.id, product.sizes, product.colors])
+
   const inWishlist = mounted ? isInWishlist(product.id) : false
 
   const pillActive =
@@ -97,24 +102,36 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
     "border-[#e0d9ce] bg-white/90 text-[#6b5d4f] hover:border-[#C0A080]/55 hover:bg-white"
 
   const handleAddToCart = () => {
-    if (!selectedSize || !selectedColor) {
-      toast.error("Veuillez sélectionner une taille et une couleur")
+    const needsSize = (product.sizes ?? []).length > 0
+    const needsColor = (product.colors ?? []).length > 0
+    if (needsSize && selectedSize == null) {
+      toast.error("Veuillez sélectionner une taille")
+      return
+    }
+    if (needsColor && !selectedColor) {
+      toast.error(needsSize ? "Veuillez sélectionner une couleur" : "Veuillez sélectionner une couleur")
       return
     }
 
     addToCart({
       product,
       quantity,
-      size: selectedSize,
-      color: selectedColor,
+      size: needsSize ? (selectedSize as number) : 0,
+      color: needsColor ? String(selectedColor) : "",
     })
     toast.success(`${product.name} ajouté au panier !`)
     setCartOpen(true)
   }
 
   const handleWhatsAppOrder = () => {
-    if (!selectedSize || !selectedColor) {
-      toast.error("Veuillez sélectionner une taille et une couleur")
+    const needsSize = (product.sizes ?? []).length > 0
+    const needsColor = (product.colors ?? []).length > 0
+    if (needsSize && selectedSize == null) {
+      toast.error("Veuillez sélectionner une taille")
+      return
+    }
+    if (needsColor && !selectedColor) {
+      toast.error("Veuillez sélectionner une couleur")
       return
     }
 
@@ -141,8 +158,8 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
       `Référence : ${product.id}`,
       `Prix unitaire : ${unitPrice}`,
       `Quantité : ${quantity}`,
-      `Taille : ${selectedSize}`,
-      `Couleur : ${selectedColor}`,
+      ...(needsSize ? [`Taille : ${selectedSize}`] : []),
+      ...(needsColor ? [`Couleur : ${selectedColor}`] : []),
       "",
       `Total estimé : ${lineTotal}`,
       "",
