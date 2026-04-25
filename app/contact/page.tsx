@@ -33,7 +33,7 @@ const contactInfo = [
     icon: Mail,
     title: "Email",
     content: "mboulaneshop@gmail.com",
-    detail: "Réponse sous 24h",
+    detail: "Réponse sous 1 à 2 jours ouvrables",
   },
   {
     icon: Clock,

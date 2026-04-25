@@ -42,7 +42,7 @@ type CheckoutSettings = { freeShippingThreshold?: number; deliveryZones?: Delive
 const defaultSettings: Required<CheckoutSettings> = {
   freeShippingThreshold: 50000,
   deliveryZones: [
-    { name: "Dakar", price: 2000, time: "24-48h" },
+    { name: "Dakar", price: 2000, time: "1 à 2 jours ouvrables" },
     { name: "Thiès", price: 3500, time: "2-3 jours" },
     { name: "Saint-Louis", price: 3500, time: "3-4 jours" },
     { name: "Autres régions", price: 4000, time: "4-5 jours" },

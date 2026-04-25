@@ -85,7 +85,7 @@ export default function ServiceClientPage() {
                 <h2 className="font-serif text-lg font-semibold text-[#3d3429]">Délais</h2>
               </div>
               <p className="text-sm font-light leading-relaxed text-[#6b5d4f]">
-                WhatsApp : souvent en quelques minutes. Email : sous 24h ouvrées.
+                WhatsApp : souvent en quelques minutes. Email : sous 1 à 2 jours ouvrables.
               </p>
             </LuxuryPanel>
           </div>
