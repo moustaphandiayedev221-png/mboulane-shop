@@ -67,7 +67,11 @@ export function Header() {
             "flex items-center justify-between h-16 md:h-20 transition-all duration-300"
           )}>
             {/* Logo : bloc sac + diamant + MBOULANE SHOP */}
-            <Link href="/" aria-label="MBOULANE SHOP — Accueil" className="group relative z-[60] flex items-center gap-3">
+            <Link
+              href="/"
+              aria-label="MBOULANE SHOP — Accueil"
+              className="group relative z-[60] flex min-w-0 flex-1 items-center gap-2 sm:gap-3"
+            >
               <div
                 className={cn(
                   "relative shrink-0 overflow-hidden rounded-xl border border-[#C9A962]/35 bg-black shadow-lg shadow-black/20 transition-all duration-500 group-hover:scale-110",
@@ -86,16 +90,16 @@ export function Header() {
               <div className="flex min-w-0 flex-col gap-1">
                 <div
                   className={cn(
-                    "flex flex-nowrap items-baseline gap-0 whitespace-nowrap leading-none",
+                    "flex min-w-0 items-baseline gap-0 leading-none sm:whitespace-nowrap",
                     "font-serif font-bold text-foreground transition-all duration-700",
-                    "text-lg sm:text-xl md:text-2xl",
+                    "text-base sm:text-xl md:text-2xl",
                   )}
                 >
                   <span className="tracking-tight">MBOULANE</span>
                   <Footprints className="inline-block h-[0.85em] w-[0.85em] shrink-0 translate-y-[0.08em] text-[#c9a14f] transition-colors duration-500 group-hover:text-[#e8cf7a] md:h-[0.9em] md:w-[0.9em]" strokeWidth={1.55} aria-hidden />
-                  <span className="tracking-tight">SHOP</span>
+                  <span className="hidden tracking-tight sm:inline">SHOP</span>
                 </div>
-                <span className="text-[8px] font-bold uppercase tracking-[0.4em] text-accent/60 transition-all duration-700 md:text-[10px]">
+                <span className="hidden text-[8px] font-bold uppercase tracking-[0.4em] text-accent/60 transition-all duration-700 md:inline md:text-[10px]">
                   Dakar • Senegal
                 </span>
               </div>
@@ -125,7 +129,7 @@ export function Header() {
             </div>
 
             {/* Actions with premium touch */}
-            <div className="flex items-center gap-1.5 relative z-[60]">
+            <div className="relative z-[60] flex shrink-0 items-center gap-1.5">
               <Button
                 variant="ghost"
                 size="icon"
