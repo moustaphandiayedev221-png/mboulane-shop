@@ -5,6 +5,7 @@ import { Loader2, Save } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { ImagePicker, type UploadedImage } from "../components/image-picker"
 import type { ArtisanalHomeContent, WhyChooseFeature, WhyChooseHomeContent } from "@/lib/site/home-sections"
 import {
   DEFAULT_ARTISANAL_HOME,
@@ -38,6 +39,9 @@ export default function AdminContentPage() {
     normalizeWhyChooseHome(null),
   )
 
+  const [artisanalImage, setArtisanalImage] = useState<UploadedImage[]>([])
+  const [whyChooseImage, setWhyChooseImage] = useState<UploadedImage[]>([])
+
   const load = async () => {
     setLoading(true)
     setError(null)
@@ -54,8 +58,12 @@ export default function AdminContentPage() {
       if (!rArt.ok) throw new Error(dArt.error || "Erreur section artisanale")
       if (!rWhy.ok) throw new Error(dWhy.error || "Erreur section Pourquoi")
       if (dContent.value) setValue(dContent.value)
-      setArtisanal(normalizeArtisanalHome(dArt.value))
-      setWhyChoose(normalizeWhyChooseHome(dWhy.value))
+      const nextArt = normalizeArtisanalHome(dArt.value)
+      const nextWhy = normalizeWhyChooseHome(dWhy.value)
+      setArtisanal(nextArt)
+      setWhyChoose(nextWhy)
+      setArtisanalImage(nextArt.imageUrl ? [{ url: nextArt.imageUrl, path: "existing" }] : [])
+      setWhyChooseImage(nextWhy.imageUrl ? [{ url: nextWhy.imageUrl, path: "existing" }] : [])
     } catch (e) {
       const message = e instanceof Error ? e.message : "Erreur"
       setError(message)
@@ -247,13 +255,18 @@ export default function AdminContentPage() {
                 </label>
                 <label className="space-y-1.5">
                   <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/45">
-                    URL image principale
+                    Image principale
                   </span>
-                  <Input
-                    value={artisanal.imageUrl}
-                    onChange={(e) => setArtisanal((a) => ({ ...a, imageUrl: e.target.value }))}
-                    className="h-11 rounded-xl border-white/10 bg-black/20 text-white"
-                    placeholder="/collection-artisan.jpg"
+                  <ImagePicker
+                    label="Image principale"
+                    bucket="site-images"
+                    folder="home/artisanal"
+                    multiple={false}
+                    value={artisanalImage}
+                    onChange={(next) => {
+                      setArtisanalImage(next)
+                      setArtisanal((a) => ({ ...a, imageUrl: next[0]?.url || "" }))
+                    }}
                   />
                 </label>
               </div>
@@ -373,11 +386,17 @@ export default function AdminContentPage() {
                   />
                 </label>
                 <label className="space-y-1.5">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/45">URL image</span>
-                  <Input
-                    value={whyChoose.imageUrl}
-                    onChange={(e) => setWhyChoose((w) => ({ ...w, imageUrl: e.target.value }))}
-                    className="h-11 rounded-xl border-white/10 bg-black/20 text-white"
+                  <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/45">Image</span>
+                  <ImagePicker
+                    label="Image"
+                    bucket="site-images"
+                    folder="home/why-choose"
+                    multiple={false}
+                    value={whyChooseImage}
+                    onChange={(next) => {
+                      setWhyChooseImage(next)
+                      setWhyChoose((w) => ({ ...w, imageUrl: next[0]?.url || "" }))
+                    }}
                   />
                 </label>
               </div>
