@@ -718,10 +718,10 @@ export default function CheckoutPage() {
                       </div>
                       <div className="flex-1 min-w-0 flex flex-col justify-center">
                         <p className="truncate text-sm font-bold transition-colors group-hover/item:text-[#b38b6d]">{item.product.name}</p>
-                        <div className="flex items-center gap-2 mt-1.5 font-bold uppercase tracking-[0.15em] text-[9px] text-muted-foreground/60">
-                           <span>TAILLE {item.size}</span>
-                           <span className="h-1 w-1 rounded-full bg-border" />
-                           <span>{item.color}</span>
+                        <div className="mt-1.5 flex flex-wrap items-center gap-2 font-bold uppercase tracking-[0.15em] text-[9px] text-muted-foreground/60">
+                          <span className="whitespace-nowrap">TAILLE {item.size}</span>
+                          <span className="h-1 w-1 rounded-full bg-border" />
+                          <span className="min-w-0 break-all">{item.color}</span>
                         </div>
                         <p className="mt-1.5 text-base font-bold text-[#b38b6d]">
                           {formatPrice(item.product.price)}
@@ -738,12 +738,12 @@ export default function CheckoutPage() {
                   </div>
                   <div className="space-y-2">
                     <Label className="text-xs uppercase tracking-widest font-bold text-muted-foreground">Code promo</Label>
-                    <div className="flex gap-2">
+                    <div className="flex min-w-0 gap-2">
                       <Input
                         value={promoCode}
                         onChange={(e) => setPromoCode(e.target.value)}
                         placeholder="MBOULANE10"
-                        className="h-12 border-[#e8e2d8] bg-white focus-visible:ring-[#b38b6d]/30"
+                        className="h-12 min-w-0 flex-1 border-[#e8e2d8] bg-white focus-visible:ring-[#b38b6d]/30"
                       />
                       <Button
                         type="button"
