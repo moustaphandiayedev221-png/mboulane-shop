@@ -92,14 +92,14 @@ export function Header() {
                   className={cn(
                     "flex min-w-0 items-baseline gap-0 leading-none sm:whitespace-nowrap",
                     "font-serif font-bold text-foreground transition-all duration-700",
-                    "text-base sm:text-xl md:text-2xl",
+                    "text-lg sm:text-xl md:text-2xl",
                   )}
                 >
                   <span className="tracking-tight">MBOULANE</span>
                   <Footprints className="inline-block h-[0.85em] w-[0.85em] shrink-0 translate-y-[0.08em] text-[#c9a14f] transition-colors duration-500 group-hover:text-[#e8cf7a] md:h-[0.9em] md:w-[0.9em]" strokeWidth={1.55} aria-hidden />
                   <span className="tracking-tight">SHOP</span>
                 </div>
-                <span className="hidden text-[8px] font-bold uppercase tracking-[0.4em] text-accent/60 transition-all duration-700 md:inline md:text-[10px]">
+                <span className="text-[9px] font-bold uppercase tracking-[0.35em] text-accent/60 transition-all duration-700 md:text-[10px]">
                   Dakar • Senegal
                 </span>
               </div>
