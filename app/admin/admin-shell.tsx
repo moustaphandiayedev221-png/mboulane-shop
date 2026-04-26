@@ -35,6 +35,7 @@ const NAV = [
   { href: "/admin/newsletter", label: "Newsletter", icon: Mail },
   { href: "/admin/promotions", label: "Promotions", icon: BadgePercent },
   { href: "/admin/contenu", label: "Contenu", icon: FileText },
+  { href: "/admin/contact", label: "Contact", icon: Mail },
   { href: "/admin/a-propos", label: "À propos", icon: BookOpen },
   { href: "/admin/parametres", label: "Paramètres", icon: Settings },
 ] as const

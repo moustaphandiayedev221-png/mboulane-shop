@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { Header } from "@/components/layout/header"
@@ -13,35 +13,16 @@ import { MapPin, Phone, Mail, Clock, MessageCircle, Send, Check, Loader2, Sparkl
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
+import { CONTACT_PAGE_KEY, DEFAULT_CONTACT_PAGE, normalizeContactPage, type ContactInfoIcon, type ContactPageContent } from "@/lib/site/contact-page"
 
 const BRONZE = "#b38b6d"
 
-const contactInfo = [
-  {
-    icon: MapPin,
-    title: "Adresse",
-    content: "Dakar, Sénégal",
-    detail: "Quartier Plateau",
-  },
-  {
-    icon: Phone,
-    title: "Téléphone",
-    content: "+221 77 923 93 05",
-    detail: "Lun–Sam : 9h–19h",
-  },
-  {
-    icon: Mail,
-    title: "Email",
-    content: "mboulaneshop@gmail.com",
-    detail: "Réponse sous 1 à 2 jours ouvrables",
-  },
-  {
-    icon: Clock,
-    title: "Horaires",
-    content: "Lun – Sam : 9h – 19h",
-    detail: "Dimanche : fermé",
-  },
-]
+const ICONS: Record<ContactInfoIcon, typeof MapPin> = {
+  mapPin: MapPin,
+  phone: Phone,
+  mail: Mail,
+  clock: Clock,
+}
 
 const formSchema = z.object({
   name: z.string().min(3, "Le nom doit comporter au moins 3 caractères"),
@@ -59,6 +40,26 @@ type FormData = z.infer<typeof formSchema>
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [page, setPage] = useState<ContactPageContent>(() => structuredClone(DEFAULT_CONTACT_PAGE))
+
+  useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      try {
+        const res = await fetch(`/api/site/settings/${encodeURIComponent(CONTACT_PAGE_KEY)}`, { cache: "no-store" })
+        const data = (await res.json()) as { value?: unknown | null }
+        if (cancelled) return
+        setPage(normalizeContactPage(data.value))
+      } catch {
+        // ignore (fallback defaults)
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const contactItems = useMemo(() => page.items, [page.items])
 
   const {
     register,
@@ -89,12 +90,12 @@ export default function ContactPage() {
 
       <LuxuryHero
         breadcrumbs={[{ label: "Accueil", href: "/" }, { label: "Contact" }]}
-        scriptTitle="Contact"
-        subtitle="Une question, une suggestion ou besoin d’aide ? Notre équipe vous accompagne avec la même exigence que sur notre boutique."
+        scriptTitle={page.hero.scriptTitle}
+        subtitle={page.hero.subtitle}
         eyebrow={
           <span className="inline-flex items-center gap-2 rounded-full border border-[#e0d9ce] bg-white/90 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6b5d4f] shadow-sm">
             <Sparkles className="h-3 w-3" style={{ color: BRONZE }} aria-hidden />
-            Parlons ensemble
+            {page.hero.eyebrowLabel}
           </span>
         }
       />
@@ -105,16 +106,18 @@ export default function ContactPage() {
             <div className="space-y-8 lg:col-span-1">
               <div>
                 <h2 className="mb-6 font-serif text-xl font-semibold tracking-tight text-[#3d3429] md:text-2xl">
-                  Nos coordonnées
+                  {page.contactInfoHeading}
                 </h2>
                 <div className="space-y-6">
-                  {contactInfo.map((item) => (
+                  {contactItems.map((item) => {
+                    const Icon = ICONS[item.icon]
+                    return (
                     <div key={item.title} className="flex gap-4">
                       <div
                         className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[#e8e2d8]"
                         style={{ background: `${BRONZE}14` }}
                       >
-                        <item.icon className="h-5 w-5" style={{ color: BRONZE }} />
+                        <Icon className="h-5 w-5" style={{ color: BRONZE }} />
                       </div>
                       <div>
                         <h3 className="font-medium text-[#3d3429]">{item.title}</h3>
@@ -130,25 +133,32 @@ export default function ContactPage() {
                         <p className="text-sm font-light text-[#6b5d4f]">{item.detail}</p>
                       </div>
                     </div>
-                  ))}
+                    )
+                  })}
                 </div>
               </div>
 
-              <LuxuryPanel className="border-[#cfe8d4]/80 bg-[#f6fdf8]/95">
-                <div className="mb-4 flex items-center gap-3">
-                  <MessageCircle className="h-6 w-6 text-[#25D366]" />
-                  <h3 className="font-semibold text-[#3d3429]">WhatsApp</h3>
-                </div>
-                <p className="mb-4 text-sm font-light leading-relaxed text-[#6b5d4f]">
-                  Pour une réponse plus rapide, écrivez-nous directement sur WhatsApp.
-                </p>
-                <Button className="w-full bg-[#25D366] text-white hover:bg-[#20BD5A]" asChild>
-                  <a href="https://wa.me/221779239305" target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className="mr-2 h-4 w-4" />
-                    Discuter sur WhatsApp
-                  </a>
-                </Button>
-              </LuxuryPanel>
+              {page.whatsapp.enabled ? (
+                <LuxuryPanel className="border-[#cfe8d4]/80 bg-[#f6fdf8]/95">
+                  <div className="mb-4 flex items-center gap-3">
+                    <MessageCircle className="h-6 w-6 text-[#25D366]" />
+                    <h3 className="font-semibold text-[#3d3429]">{page.whatsapp.heading}</h3>
+                  </div>
+                  <p className="mb-4 text-sm font-light leading-relaxed text-[#6b5d4f]">
+                    {page.whatsapp.body}
+                  </p>
+                  <Button className="w-full bg-[#25D366] text-white hover:bg-[#20BD5A]" asChild>
+                    <a
+                      href={`https://wa.me/${page.whatsapp.phoneE164.replace(/\\D/g, "")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <MessageCircle className="mr-2 h-4 w-4" />
+                      {page.whatsapp.buttonLabel}
+                    </a>
+                  </Button>
+                </LuxuryPanel>
+              ) : null}
             </div>
 
             <div className="lg:col-span-2">

@@ -1,4 +1,5 @@
 import { ABOUT_PAGE_KEY } from "@/lib/site/about-page"
+import { CONTACT_PAGE_KEY } from "@/lib/site/contact-page"
 import { HOME_ARTISANAL_KEY, HOME_WHY_CHOOSE_KEY } from "@/lib/site/home-sections"
 
 /**
@@ -12,6 +13,7 @@ export const PUBLIC_SITE_SETTING_KEYS = [
   HOME_ARTISANAL_KEY,
   HOME_WHY_CHOOSE_KEY,
   ABOUT_PAGE_KEY,
+  CONTACT_PAGE_KEY,
 ] as const
 
 export type PublicSiteSettingKey = (typeof PUBLIC_SITE_SETTING_KEYS)[number]
