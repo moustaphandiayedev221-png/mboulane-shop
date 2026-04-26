@@ -62,6 +62,16 @@
   --sidebar-accent-foreground: #FFFFFF;
   --sidebar-border: #F0EDE6;
   --sidebar-ring: #8B5E3C;
+
+  /* Offset global pour notifications (toast) sous la navbar */
+  --app-header-height: 4.5rem;
+  --toast-top-offset: calc(env(safe-area-inset-top) + var(--app-header-height) + 0.75rem);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --app-header-height: 5.5rem;
+  }
 }
 
 /* Gradient subtil ultra-premium recommandé pour casser l'effet plat */

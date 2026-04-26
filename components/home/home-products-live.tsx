@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import type { Product } from "@/lib/data/products"
 import { createClient } from "@/lib/supabase/client"
 import { BestSellersSection } from "@/components/home/bestsellers-section"
@@ -24,10 +24,6 @@ async function fetchCatalog(): Promise<Product[]> {
 
 export function HomeProductsLive({ initialProducts, artisanalContent }: Props) {
   const [products, setProducts] = useState<Product[]>(initialProducts)
-  const [tick, setTick] = useState(0)
-
-  // Évite de recréer les arrays si on refetch souvent.
-  const stableProducts = useMemo(() => products, [products, tick])
 
   useEffect(() => {
     let cancelled = false
@@ -36,7 +32,6 @@ export function HomeProductsLive({ initialProducts, artisanalContent }: Props) {
         if (cancelled) return
         if (next.length) {
           setProducts(next)
-          setTick((t) => t + 1)
         }
       })
       .catch(() => {})
@@ -57,7 +52,6 @@ export function HomeProductsLive({ initialProducts, artisanalContent }: Props) {
             const next = await fetchCatalog()
             if (next.length) {
               setProducts(next)
-              setTick((t) => t + 1)
             }
           } catch {
             // ignore
@@ -74,19 +68,19 @@ export function HomeProductsLive({ initialProducts, artisanalContent }: Props) {
   return (
     <>
       <ScrollReveal animation="slide-up" delay={100} threshold={0.1}>
-        <BestSellersSection products={stableProducts} />
+        <BestSellersSection products={products} />
       </ScrollReveal>
 
       <ScrollReveal animation="slide-up" threshold={0.15}>
-        <PremiumCollectionSection products={stableProducts} />
+        <PremiumCollectionSection products={products} />
       </ScrollReveal>
 
       <ScrollReveal animation="blur-in" threshold={0.1}>
-        <NewArrivalsSection products={stableProducts} />
+        <NewArrivalsSection products={products} />
       </ScrollReveal>
 
       <ScrollReveal animation="blur-in" threshold={0.15}>
-        <ArtisanalCollectionSection products={stableProducts} content={artisanalContent} />
+        <ArtisanalCollectionSection products={products} content={artisanalContent} />
       </ScrollReveal>
     </>
   )
