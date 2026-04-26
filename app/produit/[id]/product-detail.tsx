@@ -25,10 +25,11 @@ import {
   Check as IconCheck,
   Share2,
   Facebook,
-  Twitter,
+  Instagram,
   Link2,
   Sparkles,
 } from "lucide-react"
+import { TikTokIcon } from "@/components/icons/tiktok"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 import { getSiteBaseUrl } from "@/lib/site/base-url"
@@ -566,12 +567,21 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
                         <Facebook className="h-4 w-4 text-[#4a4036]" />
                       </a>
                       <a
-                        href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(canonicalProductUrl)}&text=${encodeURIComponent(`Découvrez ${product.name} sur Mboulane Shop`)}`}
+                        href="https://www.instagram.com/moustapha37218?igsh=dHFmbGU1ZThtYjds&utm_source=qr"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="rounded-lg p-2 transition-colors hover:bg-[#b38b6d]/10"
                       >
-                        <Twitter className="h-4 w-4 text-[#4a4036]" />
+                        <Instagram className="h-4 w-4 text-[#4a4036]" />
+                      </a>
+                      <a
+                        href={`https://www.tiktok.com/share?url=${encodeURIComponent(canonicalProductUrl)}&title=${encodeURIComponent(`Découvrez ${product.name} sur Mboulane Shop`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="rounded-lg p-2 transition-colors hover:bg-[#b38b6d]/10"
+                        aria-label="Partager sur TikTok"
+                      >
+                        <TikTokIcon className="h-4 w-4 text-[#4a4036]" />
                       </a>
                       <button
                         type="button"

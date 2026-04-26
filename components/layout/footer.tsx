@@ -1,14 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Facebook, Instagram, MapPin, Phone, Mail, Youtube, ArrowUpRight, ShieldCheck, Footprints } from "lucide-react"
-
-function TikTokIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
-      <path d="M21.6 7.2c-1.8 0-3.5-.6-4.8-1.7-1.3-1.1-2.1-2.7-2.3-4.4h-3.8v14.3c0 1.7-1.4 3.1-3.1 3.1S4.5 17 4.5 15.3s1.4-3.1 3.1-3.1c.3 0 .6 0 .9.1V8.4c-.3 0-.6-.1-.9-.1-3.8 0-7 3.1-7 7s3.1 7 7 7 7-3.1 7-7V9.6c1.5 1 3.3 1.6 5.2 1.6V7.2z" />
-    </svg>
-  )
-}
+import { Facebook, Instagram, MapPin, Phone, Mail, ArrowUpRight, ShieldCheck, Footprints } from "lucide-react"
+import { TikTokIcon } from "@/components/icons/tiktok"
 
 const footerLinks = {
   shop: [
@@ -39,10 +32,9 @@ const footerLinks = {
 }
 
 const socialLinks = [
-  { name: "Facebook", icon: Facebook, href: "https://facebook.com/mboulaneshop" },
-  { name: "Instagram", icon: Instagram, href: "https://instagram.com/mboulaneshop" },
-  { name: "TikTok", icon: TikTokIcon, href: "https://tiktok.com/@mboulaneshop" },
-  { name: "YouTube", icon: Youtube, href: "https://youtube.com/@mboulaneshop" },
+  { name: "Facebook", icon: Facebook, href: "https://www.facebook.com/share/1E8XSQS4eK/?mibextid=wwXIfr" },
+  { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/moustapha37218?igsh=dHFmbGU1ZThtYjds&utm_source=qr" },
+  { name: "TikTok", icon: TikTokIcon, href: "https://www.tiktok.com/@mboulaneshop?_r=1&_t=ZS-95rOL8dE5eH" },
 ]
 
 export function Footer() {
