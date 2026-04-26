@@ -62,7 +62,9 @@ export async function CollectionsSection() {
   /** Toujours 4 cartes maquette ; sous-titre = base sinon texte par défaut. */
   const rows: CategoryRow[] = HOME_COLLECTION_LABELS.map((canonical, index) => {
     const normalized = (s: string) => s.replace(/\s+/g, " ").trim()
-    const row = raw.find((c) => normalized(c.label) === normalized(canonical))
+    const row =
+      raw.find((c) => normalized(c.label) === normalized(canonical)) ??
+      raw.find((c) => Number(c.sort_order) === index)
     const fallbackSub = HOME_COLLECTION_SUBTITLES[canonical]
     if (row) {
       return {
