@@ -131,7 +131,7 @@ export function ArtisanalCollectionSection({
               asChild
               className="group mt-2 h-12 gap-2 rounded-full border border-[#b38b6d]/40 bg-black px-8 text-[11px] font-bold uppercase tracking-[0.15em] text-white shadow-lg transition-all duration-300 ease-out hover:border-[#D4AF37] hover:bg-[#1a1a1a] hover:shadow-[0_8px_32px_rgba(212,175,55,0.2)]"
             >
-              <Link href="/boutique?filter=artisanal">
+              <Link href="/boutique?homeSection=collection_signature">
                 Découvrir la collection
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1" />
               </Link>

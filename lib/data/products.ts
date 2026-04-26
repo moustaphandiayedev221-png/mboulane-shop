@@ -6,7 +6,12 @@ export interface Product {
   image: string
   images: string[]
   /** Section forcée sur l'accueil (optionnel). */
-  homeSection?: "best_sellers" | "premium_luxe" | "nouveautes" | "collection_artisanale"
+  homeSection?:
+    | "best_sellers"
+    | "premium_luxe"
+    | "nouveautes"
+    | "collection_artisanale"
+    | "collection_signature"
   description: string
   category: string
   sizes: number[]

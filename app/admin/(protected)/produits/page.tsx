@@ -404,6 +404,7 @@ export default function AdminProductsPage() {
                 <option value="premium_luxe">Premium et luxe</option>
                 <option value="nouveautes">Nouveautés</option>
                 <option value="collection_artisanale">Collection artisanale</option>
+                <option value="collection_signature">Collection Signature</option>
               </select>
             </Field>
             <div className="md:col-span-2">

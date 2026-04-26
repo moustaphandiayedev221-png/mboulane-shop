@@ -24,6 +24,7 @@ function normalizeHomeSection(v: unknown): Product["homeSection"] | undefined {
   if (v === "premium_luxe") return "premium_luxe"
   if (v === "nouveautes") return "nouveautes"
   if (v === "collection_artisanale") return "collection_artisanale"
+  if (v === "collection_signature") return "collection_signature"
   return undefined
 }
 

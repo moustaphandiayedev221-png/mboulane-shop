@@ -66,7 +66,8 @@ function ShopContent({
       initialHomeSection === "best_sellers" ||
       initialHomeSection === "premium_luxe" ||
       initialHomeSection === "nouveautes" ||
-      initialHomeSection === "collection_artisanale"
+      initialHomeSection === "collection_artisanale" ||
+      initialHomeSection === "collection_signature"
     ) {
       return initialHomeSection
     }
