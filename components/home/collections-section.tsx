@@ -135,7 +135,7 @@ export async function CollectionsSection() {
                         aria-hidden
                       />
                       <div className="pointer-events-none col-start-1 row-start-1 z-[2] flex flex-col justify-end bg-gradient-to-t from-black/65 via-black/30 to-transparent px-2 pb-3.5 pt-20">
-                        <p className="font-script text-center text-[clamp(1.4rem,4.2vw,2.25rem)] font-normal leading-snug text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)]">
+                        <p className="font-script text-center text-[clamp(1.4rem,4.2vw,2.25rem)] lg:text-[clamp(1.25rem,2.1vw,1.9rem)] font-normal leading-snug text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)]">
                           {subtitle}
                         </p>
                       </div>
