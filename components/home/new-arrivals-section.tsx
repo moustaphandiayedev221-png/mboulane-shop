@@ -33,7 +33,7 @@ export function NewArrivalsSection({
           className="h-11 gap-2 rounded-full border-[#d8ccb8] bg-white px-8 text-sm font-medium text-foreground shadow-sm hover:border-[#C0A080]/60 hover:bg-[#FDFBF7]"
           asChild
         >
-          <Link href="/boutique?filter=nouveau">
+          <Link href="/boutique?homeSection=nouveautes">
             Voir les nouveautés
             <ArrowRight className="h-4 w-4" />
           </Link>
