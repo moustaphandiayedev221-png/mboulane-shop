@@ -79,6 +79,11 @@ body {
   background-color: var(--background);
   background-image: linear-gradient(to bottom, #FFFFFF 0%, #FDFBF7 100%);
   background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+html {
+  overflow-x: hidden;
 }
 
 /* iOS/Android: background-attachment: fixed est souvent saccadé/bugué */
