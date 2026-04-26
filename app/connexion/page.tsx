@@ -10,6 +10,23 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { createClient } from "@/lib/supabase/client"
 
+function formatClientAuthError(message: string): string {
+  const m = message.trim().toLowerCase()
+  if (m.includes("invalid login credentials") || m.includes("invalid_credentials")) {
+    return "E-mail ou mot de passe incorrect."
+  }
+  if (m.includes("email not confirmed")) {
+    return "E-mail non confirmé. Ouvrez le lien de confirmation reçu par e-mail, puis réessayez."
+  }
+  if (m.includes("user already registered") || m.includes("already registered")) {
+    return "Un compte existe déjà avec cet e-mail. Essayez de vous connecter."
+  }
+  if (m.includes("signup") && m.includes("disabled")) {
+    return "Les inscriptions sont désactivées pour le moment."
+  }
+  return message || "Connexion impossible. Réessayez."
+}
+
 function ConnexionForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -20,6 +37,7 @@ function ConnexionForm() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
 
   useEffect(() => {
     const supabase = createClient()
@@ -41,6 +59,7 @@ function ConnexionForm() {
           onSubmit={async (e) => {
             e.preventDefault()
             setError("")
+            setSuccess("")
 
             const trimmed = email.trim().toLowerCase()
             if (!trimmed || !trimmed.includes("@")) {
@@ -58,12 +77,20 @@ function ConnexionForm() {
 
             const supabase = createClient()
             if (mode === "inscription") {
-              const { error: signUpError } = await supabase.auth.signUp({
+              const { data, error: signUpError } = await supabase.auth.signUp({
                 email: trimmed,
                 password,
               })
               if (signUpError) {
-                setError(signUpError.message)
+                setError(formatClientAuthError(signUpError.message))
+                return
+              }
+              // Si la confirmation e-mail est activée, Supabase ne crée pas de session immédiate.
+              if (!data.session) {
+                setSuccess("Compte créé. Vérifiez votre e-mail pour confirmer votre inscription, puis connectez‑vous.")
+                setMode("connexion")
+                setPassword("")
+                setConfirmPassword("")
                 return
               }
               router.push(redirectTo)
@@ -75,7 +102,7 @@ function ConnexionForm() {
               password,
             })
             if (signInError) {
-              setError(signInError.message)
+              setError(formatClientAuthError(signInError.message))
               return
             }
             router.push(redirectTo)
@@ -120,6 +147,7 @@ function ConnexionForm() {
               />
             </div>
           ) : null}
+          {success ? <p className="text-sm font-semibold text-emerald-700">{success}</p> : null}
           {error ? <p className="text-sm text-red-600">{error}</p> : null}
           <Button type="submit" className="h-12 w-full rounded-full font-semibold">
             {mode === "connexion" ? "Se connecter" : "S’inscrire"}
@@ -133,6 +161,7 @@ function ConnexionForm() {
             className="font-medium text-[#b38b6d] underline-offset-4 hover:underline"
             onClick={() => {
               setError("")
+              setSuccess("")
               setPassword("")
               setConfirmPassword("")
               setMode((m) => (m === "connexion" ? "inscription" : "connexion"))
