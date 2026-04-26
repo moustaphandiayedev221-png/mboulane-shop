@@ -45,12 +45,9 @@ function PremiumProductCard({ product, index }: { product: Product; index: numbe
   const handleAddCart = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    const size = product.sizes[0]
-    const color = product.colors[0] ?? ""
-    if (size == null) {
-      toast.error("Taille indisponible")
-      return
-    }
+    // Ajout rapide depuis la home : si pas de tailles/couleurs, on n'empêche pas l'ajout.
+    const size = product.sizes?.[0] ?? 0
+    const color = product.colors?.[0] ?? ""
     addToCart({ product, quantity: 1, size, color })
     toast.success(`${product.name} ajouté au panier`)
     setCartOpen(true)

@@ -69,7 +69,9 @@ export async function CollectionsSection() {
     if (row) {
       return {
         ...row,
-        label: canonical,
+        // Le titre affiché peut être personnalisé via l'admin (row.label).
+        // On garde canonical pour les fallbacks (images/sous-titres par défaut).
+        label: row.label,
         subtitle: row.subtitle?.trim() || fallbackSub,
       }
     }
@@ -98,10 +100,11 @@ export async function CollectionsSection() {
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-7 lg:grid-cols-4 lg:gap-6">
           {rows.map((c, idx) => {
             const canonical = c.label as HomeCollectionLabel
-            const href = `/boutique?category=${encodeURIComponent(canonical)}`
+            const displayLabel = c.label
+            const href = `/boutique?category=${encodeURIComponent(displayLabel)}`
             const imgSrc =
               (c.image && c.image.trim()) ||
-              HOME_COLLECTION_LOCAL_IMAGES[canonical] ||
+              HOME_COLLECTION_LOCAL_IMAGES[canonical as HomeCollectionLabel] ||
               "/placeholder.svg"
             const subtitle = (c.subtitle && c.subtitle.trim()) || HOME_COLLECTION_SUBTITLES[canonical] || ""
             return (
@@ -113,7 +116,7 @@ export async function CollectionsSection() {
                 <div className="flex flex-col px-1 text-center">
                   <GoldFlourish compact />
                   <h3 className="font-serif text-base font-semibold tracking-wide text-[#B8956E] sm:text-[1.05rem]">
-                    {canonical}
+                    {displayLabel}
                   </h3>
                   <GoldFlourish compact />
                 </div>

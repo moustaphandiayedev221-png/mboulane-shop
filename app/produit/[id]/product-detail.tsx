@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/layout/header"
@@ -64,6 +64,8 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
   const [selectedColor, setSelectedColor] = useState<string | null>(null)
   const [quantity, setQuantity] = useState(1)
   const [isZoomed, setIsZoomed] = useState(false)
+  const [shareOpen, setShareOpen] = useState(false)
+  const shareRef = useRef<HTMLDivElement | null>(null)
 
   const { addToCart, setCartOpen, addToWishlist, removeFromWishlist, isInWishlist } = useStore()
   const [mounted, setMounted] = useState(false)
@@ -95,6 +97,17 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
     if ((product.sizes ?? []).length === 1) setSelectedSize(product.sizes[0] ?? null)
     if ((product.colors ?? []).length === 1) setSelectedColor(product.colors[0] ?? null)
   }, [product.id, product.sizes, product.colors])
+
+  useEffect(() => {
+    if (!shareOpen) return
+    const onPointerDown = (e: PointerEvent) => {
+      const el = shareRef.current
+      if (!el) return
+      if (e.target instanceof Node && !el.contains(e.target)) setShareOpen(false)
+    }
+    document.addEventListener("pointerdown", onPointerDown)
+    return () => document.removeEventListener("pointerdown", onPointerDown)
+  }, [shareOpen])
 
   const inWishlist = mounted ? isInWishlist(product.id) : false
 
@@ -548,21 +561,32 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
                     </svg>
                     Commander sur WhatsApp
                   </Button>
-                  <div className="group/share relative">
+                  <div ref={shareRef} className="group/share relative">
                     <Button
                       variant="outline"
                       size="lg"
                       className="h-14 w-14 shrink-0 rounded-full border-2 border-[#e0d9ce] bg-white/90 transition-all hover:scale-105 hover:border-[#b38b6d]/45"
                       title="Partager"
+                      type="button"
+                      onClick={() => setShareOpen((v) => !v)}
                     >
                       <Share2 className="h-5 w-5" />
                     </Button>
-                    <div className="pointer-events-none absolute bottom-full right-0 z-50 mb-2 flex flex-col gap-2 rounded-[5px] border border-[#d8ccb8] bg-[#FDFBF7]/98 p-2 opacity-0 shadow-[0_14px_44px_rgba(0,0,0,0.08)] backdrop-blur-sm transition-all duration-300 group-hover/share:pointer-events-auto group-hover/share:opacity-100">
+                    <div
+                      className={cn(
+                        "absolute bottom-full right-0 z-50 mb-2 flex flex-col gap-2 rounded-[5px] border border-[#d8ccb8] bg-[#FDFBF7]/98 p-2 shadow-[0_14px_44px_rgba(0,0,0,0.08)] backdrop-blur-sm transition-all duration-300",
+                        // Mobile: ouverture au clic
+                        shareOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
+                        // Desktop: ouverture au hover
+                        "md:pointer-events-none md:opacity-0 md:group-hover/share:pointer-events-auto md:group-hover/share:opacity-100",
+                      )}
+                    >
                       <a
                         href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonicalProductUrl)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="rounded-lg p-2 transition-colors hover:bg-[#b38b6d]/10"
+                        onClick={() => setShareOpen(false)}
                       >
                         <Facebook className="h-4 w-4 text-[#4a4036]" />
                       </a>
@@ -571,6 +595,7 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="rounded-lg p-2 transition-colors hover:bg-[#b38b6d]/10"
+                        onClick={() => setShareOpen(false)}
                       >
                         <Instagram className="h-4 w-4 text-[#4a4036]" />
                       </a>
@@ -580,6 +605,7 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
                         rel="noopener noreferrer"
                         className="rounded-lg p-2 transition-colors hover:bg-[#b38b6d]/10"
                         aria-label="Partager sur TikTok"
+                        onClick={() => setShareOpen(false)}
                       >
                         <TikTokIcon className="h-4 w-4 text-[#4a4036]" />
                       </a>
@@ -588,6 +614,7 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
                         onClick={() => {
                           navigator.clipboard.writeText(canonicalProductUrl)
                           toast.success("Lien copié !")
+                          setShareOpen(false)
                         }}
                         className="rounded-lg p-2 transition-colors hover:bg-[#b38b6d]/10"
                       >
