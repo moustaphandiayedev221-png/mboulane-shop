@@ -411,6 +411,14 @@ img {
   image-rendering: -webkit-optimize-contrast;
 }
 
+/* Anti-copie (dissuasion) : désactive drag + menu iOS */
+img,
+video {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
 /* ===== SELECTION STYLE ===== */
 ::selection {
   background: color-mix(in oklch, var(--accent) 30%, transparent);
