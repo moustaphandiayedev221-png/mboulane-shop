@@ -117,7 +117,7 @@ function ConnexionForm() {
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="rounded-[5px] border-[#e0d9ce] bg-[#FDFBF7]"
+              className="h-12 rounded-[5px] border-[#e0d9ce] bg-[#FDFBF7] sm:h-14"
               placeholder="vous@exemple.com"
             />
           </div>
@@ -129,7 +129,7 @@ function ConnexionForm() {
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="rounded-[5px] border-[#e0d9ce] bg-[#FDFBF7]"
+              className="h-12 rounded-[5px] border-[#e0d9ce] bg-[#FDFBF7] sm:h-14"
               placeholder="••••••••"
             />
           </div>
@@ -142,7 +142,7 @@ function ConnexionForm() {
                 autoComplete="new-password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="rounded-[5px] border-[#e0d9ce] bg-[#FDFBF7]"
+                className="h-12 rounded-[5px] border-[#e0d9ce] bg-[#FDFBF7] sm:h-14"
                 placeholder="••••••••"
               />
             </div>
