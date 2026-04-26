@@ -9,6 +9,8 @@ import { QuickViewManager } from "@/components/products/quick-view-manager"
 import { SupabaseStoreSync } from "@/components/supabase-store-sync"
 import { VisitTracker } from "@/components/analytics/visit-tracker"
 import { AntiCopy } from "@/components/security/anti-copy.client"
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const poppins = Poppins({ 
   subsets: ["latin"],
@@ -83,6 +85,8 @@ export default function RootLayout({
           <QuickViewManager />
           <Toaster />
           <WhatsAppFloat />
+          <Analytics />
+          <SpeedInsights />
         </ThemeProvider>
       </body>
     </html>
