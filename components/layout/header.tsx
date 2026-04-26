@@ -97,7 +97,7 @@ export function Header() {
                 >
                   <span className="tracking-tight">MBOULANE</span>
                   <Footprints className="inline-block h-[0.85em] w-[0.85em] shrink-0 translate-y-[0.08em] text-[#c9a14f] transition-colors duration-500 group-hover:text-[#e8cf7a] md:h-[0.9em] md:w-[0.9em]" strokeWidth={1.55} aria-hidden />
-                  <span className="hidden tracking-tight sm:inline">SHOP</span>
+                  <span className="tracking-tight">SHOP</span>
                 </div>
                 <span className="hidden text-[8px] font-bold uppercase tracking-[0.4em] text-accent/60 transition-all duration-700 md:inline md:text-[10px]">
                   Dakar • Senegal
