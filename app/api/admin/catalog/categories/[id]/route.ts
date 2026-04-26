@@ -3,6 +3,7 @@ import { z } from "zod"
 import { createServiceRoleClient } from "@/lib/supabase/admin"
 import { isSubtitleSchemaError } from "@/lib/admin/categories-subtitle-compat"
 import { assertAdmin } from "@/lib/admin/auth"
+import { revalidatePath } from "next/cache"
 
 const schema = z.object({
   label: z.string().min(1),
@@ -23,6 +24,10 @@ export async function DELETE(
   const admin = createServiceRoleClient()
   const { error } = await admin.from("categories").delete().eq("id", Number(id))
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+  revalidatePath("/")
+  revalidatePath("/boutique")
+  revalidatePath("/admin/categories")
   return NextResponse.json({ ok: true })
 }
 
@@ -58,6 +63,9 @@ export async function PATCH(
   }
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
+  revalidatePath("/")
+  revalidatePath("/boutique")
+  revalidatePath("/admin/categories")
   return NextResponse.json({ ok: true })
 }
 

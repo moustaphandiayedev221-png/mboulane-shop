@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { createServiceRoleClient } from "@/lib/supabase/admin"
 import { adminSelectCategories, isSubtitleSchemaError, omitSubtitle } from "@/lib/admin/categories-subtitle-compat"
 import { assertAdmin } from "@/lib/admin/auth"
+import { revalidatePath } from "next/cache"
 import {
   HOME_COLLECTION_LABELS,
   HOME_COLLECTION_LOCAL_IMAGES,
@@ -37,5 +38,9 @@ export async function POST() {
 
   const { data, error: selErr } = await adminSelectCategories(admin)
   if (selErr) return NextResponse.json({ error: selErr.message }, { status: 500 })
+
+  revalidatePath("/")
+  revalidatePath("/boutique")
+  revalidatePath("/admin/categories")
   return NextResponse.json({ ok: true, categories: data ?? [] })
 }

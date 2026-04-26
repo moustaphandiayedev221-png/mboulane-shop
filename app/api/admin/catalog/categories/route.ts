@@ -3,6 +3,7 @@ import { z } from "zod"
 import { createServiceRoleClient } from "@/lib/supabase/admin"
 import { adminSelectCategories, isSubtitleSchemaError, omitSubtitle } from "@/lib/admin/categories-subtitle-compat"
 import { assertAdmin } from "@/lib/admin/auth"
+import { revalidatePath } from "next/cache"
 
 const schema = z.object({
   label: z.string().min(1),
@@ -43,6 +44,11 @@ export async function POST(req: Request) {
       .upsert(omitSubtitle(parsed.data as Record<string, unknown>), { onConflict: "label" }))
   }
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+  // Les collections sont affichées sur l'accueil (server component) : on invalide le cache.
+  revalidatePath("/")
+  revalidatePath("/boutique")
+  revalidatePath("/admin/categories")
   return NextResponse.json({ ok: true })
 }
 
