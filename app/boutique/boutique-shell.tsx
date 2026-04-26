@@ -57,6 +57,21 @@ function ShopContent({
 
   const initialQuickFilter = searchParams.get("filter")
   const initialPopular = searchParams.get("popular")
+  const initialHomeSection = searchParams.get("homeSection")
+
+  const [homeSection, setHomeSection] = useState<
+    Product["homeSection"] | null
+  >(() => {
+    if (
+      initialHomeSection === "best_sellers" ||
+      initialHomeSection === "premium_luxe" ||
+      initialHomeSection === "nouveautes" ||
+      initialHomeSection === "collection_artisanale"
+    ) {
+      return initialHomeSection
+    }
+    return null
+  })
 
   const [selectedCategory, setSelectedCategory] = useState<string>(() => {
     if (initialQuickFilter === "artisanal") return "Tous"
@@ -89,6 +104,7 @@ function ShopContent({
     if (selectedCategory !== "Tous") params.set("category", selectedCategory)
     if (maxPrice !== 90000) params.set("price", maxPrice.toString())
     if (selectedSizes.length > 0) params.set("sizes", selectedSizes.join(","))
+    if (homeSection) params.set("homeSection", homeSection)
 
     const quickFilter =
       isLuxeOnly
@@ -121,6 +137,7 @@ function ShopContent({
     selectedCategory,
     maxPrice,
     selectedSizes,
+    homeSection,
     popularFilter,
     sortBy,
     isLuxeOnly,
@@ -156,6 +173,10 @@ function ShopContent({
 
   const filteredProducts = useMemo(() => {
     let filtered = [...products]
+
+    if (homeSection) {
+      filtered = filtered.filter((p) => p.homeSection === homeSection)
+    }
 
     if (selectedCategory !== "Tous") {
       filtered = filtered.filter((p) => p.category === selectedCategory)
@@ -213,6 +234,7 @@ function ShopContent({
     selectedCategory,
     maxPrice,
     selectedSizes,
+    homeSection,
     popularFilter,
     sortBy,
     isLuxeOnly,
@@ -233,6 +255,7 @@ function ShopContent({
     setIsLuxeOnly(false)
     setIsPromoOnly(false)
     setIsArtisanalOnly(false)
+    setHomeSection(null)
   }
 
   const FiltersCard = ({ variant }: { variant: "desktop" | "mobile" }) => (

@@ -201,7 +201,7 @@ export function PremiumCollectionSection({
             asChild
             className="group/btn h-12 gap-3 rounded-full border border-[#D4AF37]/40 bg-white px-8 text-[10px] font-bold uppercase tracking-[0.2em] text-black transition-all duration-300 ease-out hover:border-[#D4AF37] hover:bg-[#D4AF37] hover:text-black hover:shadow-[0_0_28px_rgba(212,175,55,0.35)]"
           >
-            <Link href="/boutique?filter=premium">
+            <Link href="/boutique?homeSection=premium_luxe">
               Toute la collection Luxe
               <ArrowRight className="h-4 w-4 transition-transform duration-300 ease-out group-hover/btn:translate-x-1" />
             </Link>
