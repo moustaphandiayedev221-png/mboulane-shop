@@ -6,13 +6,26 @@ import { checkRateLimitAsync, getClientIp } from "@/lib/rate-limit"
 import { logError, logInfo, logWarn } from "@/lib/log"
 import { getRequestId } from "@/lib/request-id"
 
+const DEFAULT_LINE_IMAGE = "/brand-ms-logo.png"
+const DEFAULT_LINE_NAME = "Produit"
+const DEFAULT_LINE_COLOR = "—"
+
 const orderItemSchema = z.object({
-  productId: z.string().min(1),
-  name: z.string().min(1),
-  image: z.string().min(1),
+  productId: z.coerce.string().transform((s) => s.trim()).pipe(z.string().min(1)),
+  name: z
+    .union([z.string(), z.null(), z.undefined()])
+    .transform((s) => (typeof s === "string" && s.trim() ? s.trim() : DEFAULT_LINE_NAME))
+    .pipe(z.string().min(1)),
+  image: z
+    .union([z.string(), z.null(), z.undefined()])
+    .transform((s) => (typeof s === "string" && s.trim() ? s.trim() : DEFAULT_LINE_IMAGE))
+    .pipe(z.string().min(1)),
   quantity: z.coerce.number().int().positive(),
   size: z.coerce.number().int().nonnegative(),
-  color: z.string().min(1),
+  color: z
+    .union([z.string(), z.null(), z.undefined()])
+    .transform((s) => (typeof s === "string" && s.trim() ? s.trim() : DEFAULT_LINE_COLOR))
+    .pipe(z.string().min(1)),
   unitPrice: z.coerce.number().nonnegative(),
 })
 

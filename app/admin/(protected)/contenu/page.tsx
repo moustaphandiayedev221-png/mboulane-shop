@@ -14,6 +14,12 @@ import {
   normalizeArtisanalHome,
   normalizeWhyChooseHome,
 } from "@/lib/site/home-sections"
+import {
+  DEFAULT_REVIEWS_STATS_HOME,
+  HOME_REVIEWS_STATS_KEY,
+  normalizeReviewsStatsHome,
+} from "@/lib/site/reviews-stats-content"
+import type { ReviewsStatsHomeContent } from "@/lib/site/reviews-stats-content"
 
 type ContentSettings = {
   promoBanner?: {
@@ -30,6 +36,7 @@ export default function AdminContentPage() {
   const [savingPromo, setSavingPromo] = useState(false)
   const [savingArtisanal, setSavingArtisanal] = useState(false)
   const [savingWhy, setSavingWhy] = useState(false)
+  const [savingReviews, setSavingReviews] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [value, setValue] = useState<ContentSettings>({
     promoBanner: { enabled: true, text: "10% de réduction — Code: MBOULANE10", dismissable: true },
@@ -38,6 +45,7 @@ export default function AdminContentPage() {
   const [whyChoose, setWhyChoose] = useState<WhyChooseHomeContent>(() =>
     normalizeWhyChooseHome(null),
   )
+  const [reviewsStats, setReviewsStats] = useState<ReviewsStatsHomeContent>(DEFAULT_REVIEWS_STATS_HOME)
 
   const [artisanalImage, setArtisanalImage] = useState<UploadedImage[]>([])
   const [whyChooseImage, setWhyChooseImage] = useState<UploadedImage[]>([])
@@ -46,22 +54,26 @@ export default function AdminContentPage() {
     setLoading(true)
     setError(null)
     try {
-      const [rContent, rArt, rWhy] = await Promise.all([
+      const [rContent, rArt, rWhy, rReviews] = await Promise.all([
         fetch("/api/admin/site/settings/content"),
         fetch(`/api/admin/site/settings/${encodeURIComponent(HOME_ARTISANAL_KEY)}`),
         fetch(`/api/admin/site/settings/${encodeURIComponent(HOME_WHY_CHOOSE_KEY)}`),
+        fetch(`/api/admin/site/settings/${encodeURIComponent(HOME_REVIEWS_STATS_KEY)}`),
       ])
       const dContent = (await rContent.json()) as { value?: ContentSettings | null; error?: string }
       const dArt = (await rArt.json()) as { value?: unknown; error?: string }
       const dWhy = (await rWhy.json()) as { value?: unknown; error?: string }
+      const dReviews = (await rReviews.json()) as { value?: unknown; error?: string }
       if (!rContent.ok) throw new Error(dContent.error || "Erreur contenu")
       if (!rArt.ok) throw new Error(dArt.error || "Erreur section artisanale")
       if (!rWhy.ok) throw new Error(dWhy.error || "Erreur section Pourquoi")
+      if (!rReviews.ok) throw new Error(dReviews.error || "Erreur chiffres avis")
       if (dContent.value) setValue(dContent.value)
       const nextArt = normalizeArtisanalHome(dArt.value)
       const nextWhy = normalizeWhyChooseHome(dWhy.value)
       setArtisanal(nextArt)
       setWhyChoose(nextWhy)
+      setReviewsStats(normalizeReviewsStatsHome(dReviews.value))
       setArtisanalImage(nextArt.imageUrl ? [{ url: nextArt.imageUrl, path: "existing" }] : [])
       setWhyChooseImage(nextWhy.imageUrl ? [{ url: nextWhy.imageUrl, path: "existing" }] : [])
     } catch (e) {
@@ -129,6 +141,25 @@ export default function AdminContentPage() {
     }
   }
 
+  const saveReviews = async () => {
+    setSavingReviews(true)
+    setError(null)
+    try {
+      const res = await fetch(`/api/admin/site/settings/${encodeURIComponent(HOME_REVIEWS_STATS_KEY)}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ value: reviewsStats }),
+      })
+      const data = (await res.json()) as { ok?: boolean; error?: string }
+      if (!res.ok) throw new Error(data.error || "Erreur")
+    } catch (e) {
+      const message = e instanceof Error ? e.message : "Erreur"
+      setError(message)
+    } finally {
+      setSavingReviews(false)
+    }
+  }
+
   useEffect(() => {
     void load()
   }, [])
@@ -143,8 +174,9 @@ export default function AdminContentPage() {
             <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/50">Contenu</p>
             <h1 className="mt-3 text-2xl font-semibold">Accueil &amp; messages</h1>
             <p className="mt-2 text-sm text-white/55">
-              Bannière promo, section <strong className="text-white/80">Collection artisanale</strong> et{" "}
-              <strong className="text-white/80">Pourquoi MBOULANE</strong> (stockés dans Supabase{" "}
+              Bannière promo, <strong className="text-white/80">Collection artisanale</strong>,{" "}
+              <strong className="text-white/80">Pourquoi MBOULANE</strong> et{" "}
+              <strong className="text-white/80">chiffres sous les avis</strong> (Supabase{" "}
               <code className="text-white/70">site_settings</code>).
             </p>
           </div>
@@ -510,6 +542,114 @@ export default function AdminContentPage() {
                     </label>
                   </div>
                 ))}
+              </div>
+            </section>
+
+            <section className="space-y-4 border-t border-white/10 pt-8">
+              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/45">
+                    Section Avis — bandeau chiffres
+                  </p>
+                  <p className="mt-1 text-[11px] text-white/45">Clé : {HOME_REVIEWS_STATS_KEY}</p>
+                  <p className="mt-1 text-sm text-white/50">
+                    Affiché sous le carrousel d&apos;avis (note /5, avis vérifiés, satisfaction %).
+                  </p>
+                </div>
+                <Button
+                  className="h-10 shrink-0 rounded-xl bg-[#b38b6d] text-black hover:bg-[#c29a7d]"
+                  onClick={saveReviews}
+                  disabled={savingReviews}
+                >
+                  {savingReviews ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <Save className="mr-2 h-4 w-4" />
+                  )}
+                  Enregistrer
+                </Button>
+              </div>
+              <div className="grid gap-4 md:grid-cols-3">
+                <label className="space-y-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/45">
+                    Note moyenne (0–5)
+                  </span>
+                  <Input
+                    type="number"
+                    min={0}
+                    max={5}
+                    step={0.1}
+                    value={reviewsStats.averageRating}
+                    onChange={(e) =>
+                      setReviewsStats((r) => ({
+                        ...r,
+                        averageRating: Number(e.target.value.replace(",", ".")) || 0,
+                      }))
+                    }
+                    className="h-11 rounded-xl border-white/10 bg-black/20 text-white"
+                  />
+                </label>
+                <label className="space-y-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/45">Libellé</span>
+                  <Input
+                    value={reviewsStats.labelAverage}
+                    onChange={(e) => setReviewsStats((r) => ({ ...r, labelAverage: e.target.value }))}
+                    className="h-11 rounded-xl border-white/10 bg-black/20 text-white"
+                  />
+                </label>
+                <div className="hidden md:block" aria-hidden />
+                <label className="space-y-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/45">Avis vérifiés (nombre)</span>
+                  <Input
+                    type="number"
+                    min={0}
+                    step={1}
+                    value={reviewsStats.verifiedCount}
+                    onChange={(e) =>
+                      setReviewsStats((r) => ({
+                        ...r,
+                        verifiedCount: Math.max(0, Math.floor(Number(e.target.value) || 0)),
+                      }))
+                    }
+                    className="h-11 rounded-xl border-white/10 bg-black/20 text-white"
+                  />
+                </label>
+                <label className="space-y-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/45">Libellé</span>
+                  <Input
+                    value={reviewsStats.labelVerified}
+                    onChange={(e) => setReviewsStats((r) => ({ ...r, labelVerified: e.target.value }))}
+                    className="h-11 rounded-xl border-white/10 bg-black/20 text-white"
+                  />
+                </label>
+                <div className="hidden md:block" aria-hidden />
+                <label className="space-y-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/45">
+                    Clients satisfaits (0–100)
+                  </span>
+                  <Input
+                    type="number"
+                    min={0}
+                    max={100}
+                    step={1}
+                    value={reviewsStats.satisfactionPercent}
+                    onChange={(e) =>
+                      setReviewsStats((r) => ({
+                        ...r,
+                        satisfactionPercent: Math.min(100, Math.max(0, Math.floor(Number(e.target.value) || 0))),
+                      }))
+                    }
+                    className="h-11 rounded-xl border-white/10 bg-black/20 text-white"
+                  />
+                </label>
+                <label className="space-y-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/45">Libellé</span>
+                  <Input
+                    value={reviewsStats.labelSatisfaction}
+                    onChange={(e) => setReviewsStats((r) => ({ ...r, labelSatisfaction: e.target.value }))}
+                    className="h-11 rounded-xl border-white/10 bg-black/20 text-white"
+                  />
+                </label>
               </div>
             </section>
           </div>

@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button"
 import { AnimatedCounter } from "@/components/ui/animated-counter"
 import { LuxuryScriptHeading } from "@/components/home/luxury-script-heading"
 import { reviews as staticReviews } from "@/lib/data/products"
+import type { ReviewsStatsHomeContent } from "@/lib/site/reviews-stats-content"
+import { DEFAULT_REVIEWS_STATS_HOME } from "@/lib/site/reviews-stats-content"
 import { cn } from "@/lib/utils"
 
 const SURFACE = {
@@ -20,9 +22,12 @@ const GOLD = "#D4AF37"
 
 export function ReviewsSection({
   items = staticReviews,
+  stats = DEFAULT_REVIEWS_STATS_HOME,
 }: {
   items?: typeof staticReviews
+  stats?: ReviewsStatsHomeContent
 }) {
+  const s = stats
   const reviews = items
   const [isMdUp, setIsMdUp] = useState(false)
   const [mobileIndex, setMobileIndex] = useState(0)
@@ -212,9 +217,9 @@ export function ReviewsSection({
 
         <div className="mt-16 flex flex-wrap justify-center gap-12 border-t border-black/[0.06] pt-14 md:mt-20 md:gap-20 md:pt-16">
           {[
-            { value: 4.8, suffix: "/5", label: "Note moyenne" },
-            { value: 500, suffix: "+", label: "Avis vérifiés" },
-            { value: 98, suffix: "%", label: "Clients satisfaits" },
+            { value: s.averageRating, suffix: "/5", label: s.labelAverage },
+            { value: s.verifiedCount, suffix: "+", label: s.labelVerified },
+            { value: s.satisfactionPercent, suffix: "%", label: s.labelSatisfaction },
           ].map((stat) => (
             <div key={stat.label} className="group text-center">
               <p

@@ -213,15 +213,22 @@ export default function CheckoutPage() {
         promoCode: promoStatus.appliedCode,
         discount: promoStatus.discount,
         total,
-        items: cart.map((item) => ({
-          productId: item.product.id,
-          name: item.product.name,
-          image: item.product.image,
-          quantity: item.quantity,
-          size: item.size,
-          color: item.color,
-          unitPrice: item.product.price,
-        })),
+        items: cart
+          .filter((item) => item?.product && String(item.product.id ?? "").trim() !== "")
+          .map((item) => {
+            const image = typeof item.product.image === "string" && item.product.image.trim() ? item.product.image.trim() : "/brand-ms-logo.png"
+            const name = typeof item.product.name === "string" && item.product.name.trim() ? item.product.name.trim() : "Produit"
+            const color = typeof item.color === "string" && item.color.trim() ? item.color.trim() : "—"
+            return {
+              productId: String(item.product.id).trim(),
+              name,
+              image,
+              quantity: item.quantity,
+              size: item.size,
+              color,
+              unitPrice: item.product.price,
+            }
+          }),
       }
 
       const res = await fetch("/api/orders", {

@@ -22,6 +22,7 @@ import {
   HOME_ARTISANAL_KEY,
   HOME_WHY_CHOOSE_KEY,
 } from "../lib/site/home-sections"
+import { DEFAULT_REVIEWS_STATS_HOME, HOME_REVIEWS_STATS_KEY } from "../lib/site/reviews-stats-content"
 import { ABOUT_PAGE_KEY, DEFAULT_ABOUT_PAGE } from "../lib/site/about-page"
 
 dotenv.config({ path: ".env.local" })
@@ -57,6 +58,7 @@ async function main() {
     [
       { key: HOME_ARTISANAL_KEY, value: DEFAULT_ARTISANAL_HOME },
       { key: HOME_WHY_CHOOSE_KEY, value: DEFAULT_WHY_CHOOSE_HOME },
+      { key: HOME_REVIEWS_STATS_KEY, value: DEFAULT_REVIEWS_STATS_HOME },
       { key: ABOUT_PAGE_KEY, value: DEFAULT_ABOUT_PAGE },
     ],
     { onConflict: "key", ignoreDuplicates: false },

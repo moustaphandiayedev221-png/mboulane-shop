@@ -1,8 +1,17 @@
 import { createPublicServerClient } from "@/lib/supabase/public-server"
+import {
+  DEFAULT_REVIEWS_STATS_HOME,
+  HOME_REVIEWS_STATS_KEY,
+  parseReviewsStatsOrNull,
+} from "@/lib/site/reviews-stats-content"
+import type { ReviewsStatsHomeContent } from "@/lib/site/reviews-stats-content"
 
 /** Clés `site_settings` pour les sections d’accueil éditables. */
 export const HOME_ARTISANAL_KEY = "home_artisanal" as const
 export const HOME_WHY_CHOOSE_KEY = "home_why_choose" as const
+
+export { HOME_REVIEWS_STATS_KEY, DEFAULT_REVIEWS_STATS_HOME, normalizeReviewsStatsHome } from "@/lib/site/reviews-stats-content"
+export type { ReviewsStatsHomeContent } from "@/lib/site/reviews-stats-content"
 
 export type ArtisanalHomeContent = {
   heading: string
@@ -179,4 +188,9 @@ export function normalizeArtisanalHome(raw: unknown): ArtisanalHomeContent {
 
 export function normalizeWhyChooseHome(raw: unknown): WhyChooseHomeContent {
   return parseWhyChoose(raw) ?? DEFAULT_WHY_CHOOSE_HOME
+}
+
+export async function getReviewsStatsHomeContent(): Promise<ReviewsStatsHomeContent> {
+  const row = await fetchSettingJson(HOME_REVIEWS_STATS_KEY)
+  return parseReviewsStatsOrNull(row) ?? DEFAULT_REVIEWS_STATS_HOME
 }

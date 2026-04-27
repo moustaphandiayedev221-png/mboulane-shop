@@ -11,15 +11,20 @@ import { ScrollReveal } from "@/components/ui/scroll-reveal"
 import { Marquee } from "@/components/ui/marquee"
 import { getProducts, getReviews } from "@/lib/catalog"
 import { getHeroContent } from "@/lib/site/hero"
-import { getArtisanalHomeContent, getWhyChooseHomeContent } from "@/lib/site/home-sections"
+import {
+  getArtisanalHomeContent,
+  getReviewsStatsHomeContent,
+  getWhyChooseHomeContent,
+} from "@/lib/site/home-sections"
 
 export default async function HomePage() {
-  const [products, reviews, heroContent, artisanalContent, whyChooseContent] = await Promise.all([
+  const [products, reviews, heroContent, artisanalContent, whyChooseContent, reviewsStats] = await Promise.all([
     getProducts(),
     getReviews(),
     getHeroContent(),
     getArtisanalHomeContent(),
     getWhyChooseHomeContent(),
+    getReviewsStatsHomeContent(),
   ])
   return (
     <LuxuryMain>
@@ -39,7 +44,7 @@ export default async function HomePage() {
       </ScrollReveal>
 
       <ScrollReveal animation="slide-up" threshold={0.1}>
-        <ReviewsSection items={reviews} />
+        <ReviewsSection items={reviews} stats={reviewsStats} />
       </ScrollReveal>
 
       <ScrollReveal animation="blur-in" threshold={0.2}>
