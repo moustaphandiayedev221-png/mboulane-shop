@@ -4,8 +4,8 @@ import { getSiteBaseUrl } from '@/lib/site/base-url'
 import './globals.css'
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
-import { WhatsAppFloat } from "@/components/ui/whatsapp-float"
 import { QuickViewManager } from "@/components/products/quick-view-manager"
+import { DeferredWhatsAppFloat } from "@/components/deferred-whatsapp-float.client"
 import { SupabaseStoreSync } from "@/components/supabase-store-sync"
 import { VisitTracker } from "@/components/analytics/visit-tracker"
 import { AntiCopy } from "@/components/security/anti-copy.client"
@@ -84,7 +84,7 @@ export default function RootLayout({
           <SupabaseStoreSync />
           <QuickViewManager />
           <Toaster />
-          <WhatsAppFloat />
+          <DeferredWhatsAppFloat />
           <Analytics />
           <SpeedInsights />
         </ThemeProvider>

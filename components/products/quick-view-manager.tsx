@@ -1,16 +1,27 @@
 "use client"
 
+import { useCallback, startTransition } from "react"
+import dynamic from "next/dynamic"
 import { useStore } from "@/lib/store"
-import { QuickView } from "./quick-view"
+
+const QuickView = dynamic(
+  () => import("./quick-view").then((m) => m.QuickView),
+  { ssr: false },
+)
 
 export function QuickViewManager() {
-  const { quickViewProduct, isQuickViewOpen, setQuickViewOpen } = useStore()
+  const quickViewProduct = useStore((s) => s.quickViewProduct)
+  const isQuickViewOpen = useStore((s) => s.isQuickViewOpen)
+  const setQuickViewOpen = useStore((s) => s.setQuickViewOpen)
+  const onClose = useCallback(() => {
+    startTransition(() => setQuickViewOpen(false))
+  }, [setQuickViewOpen])
 
   return (
-    <QuickView 
-      product={quickViewProduct} 
-      isOpen={isQuickViewOpen} 
-      onClose={() => setQuickViewOpen(false)} 
+    <QuickView
+      product={quickViewProduct}
+      isOpen={isQuickViewOpen}
+      onClose={onClose}
     />
   )
 }

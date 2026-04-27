@@ -9,6 +9,7 @@ import type { HeroContent } from "@/lib/site/hero"
 
 export function HeroSection({ hero }: { hero: HeroContent }) {
   const imgRef = useRef<HTMLImageElement | null>(null)
+  const sectionRef = useRef<HTMLElement>(null)
   const rafRef = useRef<number | null>(null)
 
   useEffect(() => {
@@ -19,7 +20,10 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
     const isCoarse = typeof window !== "undefined" && window.matchMedia?.("(pointer: coarse)")?.matches
     if (isCoarse) return
 
+    let isVisible = true
+
     const onScroll = () => {
+      if (!isVisible) return
       if (rafRef.current) return
       rafRef.current = window.requestAnimationFrame(() => {
         rafRef.current = null
@@ -29,10 +33,20 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
       })
     }
 
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting
+    }, { rootMargin: "200px" })
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
+    }
+
     window.addEventListener("scroll", onScroll, { passive: true })
     onScroll()
+    
     return () => {
       window.removeEventListener("scroll", onScroll)
+      observer.disconnect()
       if (rafRef.current) window.cancelAnimationFrame(rafRef.current)
       rafRef.current = null
     }
@@ -45,13 +59,14 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
   const bg = hero.backgroundImage ?? "/hero-mboulane.png"
 
   return (
-    <section className="relative flex h-[550px] items-center justify-center overflow-hidden">
+    <section ref={sectionRef} className="relative flex h-[550px] items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
           src={bg}
           alt="Sandales en cuir crème, lanière T à motifs géométriques, lumière dorée sur parquet — MBOULANE"
           fill
           priority
+          fetchPriority="high"
           sizes="100vw"
           className="object-cover object-center will-change-transform"
           ref={imgRef}

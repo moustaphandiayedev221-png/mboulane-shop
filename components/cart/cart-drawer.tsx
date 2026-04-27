@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, startTransition } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { X, Plus, Minus, ShoppingBag, Trash2 } from "lucide-react"
@@ -9,8 +9,13 @@ import { useStore, formatPrice } from "@/lib/store"
 import { cn } from "@/lib/utils"
 
 export function CartDrawer() {
-  const { isCartOpen, setCartOpen, cart, updateQuantity, removeFromCart, getCartTotal, authRequired } =
-    useStore()
+  const isCartOpen = useStore((s) => s.isCartOpen)
+  const setCartOpen = useStore((s) => s.setCartOpen)
+  const cart = useStore((s) => s.cart)
+  const updateQuantity = useStore((s) => s.updateQuantity)
+  const removeFromCart = useStore((s) => s.removeFromCart)
+  const getCartTotal = useStore((s) => s.getCartTotal)
+  const authRequired = useStore((s) => s.authRequired)
   const [threshold, setThreshold] = useState(50000)
 
   useEffect(() => {
@@ -39,6 +44,10 @@ export function CartDrawer() {
 
   const total = getCartTotal()
 
+  const close = () => {
+    startTransition(() => setCartOpen(false))
+  }
+
   return (
     <>
       {/* Backdrop */}
@@ -47,7 +56,7 @@ export function CartDrawer() {
           "fixed inset-0 z-[110] bg-black/50 transition-opacity duration-300",
           isCartOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         )}
-        onClick={() => setCartOpen(false)}
+        onClick={close}
         aria-hidden="true"
       />
 
@@ -70,7 +79,7 @@ export function CartDrawer() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setCartOpen(false)}
+            onClick={close}
             aria-label="Fermer le panier"
           >
             <X className="h-5 w-5" />
@@ -105,7 +114,7 @@ export function CartDrawer() {
             <div className="flex flex-col items-center justify-center h-full text-center">
               <ShoppingBag className="h-16 w-16 text-muted-foreground/50 mb-4" />
               <p className="text-muted-foreground mb-4">Votre panier est vide</p>
-              <Button onClick={() => setCartOpen(false)} asChild>
+              <Button onClick={close} asChild>
                 <Link href="/boutique">Découvrir nos produits</Link>
               </Button>
             </div>
@@ -193,7 +202,7 @@ export function CartDrawer() {
               <Button 
                 className="w-full" 
                 size="lg"
-                onClick={() => setCartOpen(false)}
+                onClick={close}
                 asChild
               >
                 <Link href="/checkout">
@@ -203,7 +212,7 @@ export function CartDrawer() {
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={() => setCartOpen(false)}
+                onClick={close}
               >
                 Continuer mes achats
               </Button>

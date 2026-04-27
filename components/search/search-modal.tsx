@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useMemo, useDeferredValue, startTransition } from "react"
 import * as Dialog from "@radix-ui/react-dialog"
 import { Search, X } from "lucide-react"
 import Image from "next/image"
@@ -8,6 +8,7 @@ import Link from "next/link"
 import { formatPrice } from "@/lib/store"
 import type { Product } from "@/lib/store"
 import { cn } from "@/lib/utils"
+import { getSearchCatalogFromCache, prefetchSearchCatalog } from "@/lib/search/catalog-prefetch"
 
 interface SearchModalProps {
   isOpen: boolean
@@ -18,47 +19,48 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [query, setQuery] = useState("")
   const [products, setProducts] = useState<Product[]>([])
   const inputRef = useRef<HTMLInputElement>(null)
+  const deferredQuery = useDeferredValue(query)
 
   useEffect(() => {
     if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 100)
+      const cached = getSearchCatalogFromCache()
+      if (cached) {
+        setProducts(cached)
+      } else {
+        void prefetchSearchCatalog().then((data) => {
+          setProducts(data)
+        })
+      }
+      requestAnimationFrame(() => {
+        inputRef.current?.focus()
+      })
     } else {
-      setQuery("")
+      startTransition(() => {
+        setQuery("")
+      })
     }
   }, [isOpen])
 
-  useEffect(() => {
-    if (!isOpen) return
-    let cancelled = false
-    fetch("/api/catalog")
-      .then((res) => (res.ok ? res.json() : Promise.reject()))
-      .then((data: Product[]) => {
-        if (!cancelled && Array.isArray(data)) setProducts(data)
-      })
-      .catch(() => {
-        /* garde liste vide ; pas de blocage UI */
-      })
-    return () => {
-      cancelled = true
-    }
-  }, [isOpen])
-
-  const filteredProducts = query.trim() === "" 
-    ? []
-    : products.filter(p => 
-        p.name.toLowerCase().includes(query.toLowerCase()) || 
-        p.category.toLowerCase().includes(query.toLowerCase())
-      ).slice(0, 5) // Limit to 5 results
+  const filteredProducts = useMemo(() => {
+    if (deferredQuery.trim() === "") return []
+    const q = deferredQuery.toLowerCase()
+    return products
+      .filter(
+        (p) =>
+          p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q),
+      )
+      .slice(0, 5)
+  }, [deferredQuery, products])
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={(open) => (!open ? onClose() : undefined)}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-[110] bg-background/80 backdrop-blur-sm" />
+        <Dialog.Overlay className="fixed inset-0 z-[110] bg-background/90" />
         <Dialog.Content
           className={cn(
             "fixed left-1/2 top-[10vh] z-[111] w-[calc(100%-2rem)] max-w-2xl -translate-x-1/2",
             "bg-card rounded-2xl shadow-2xl border border-border overflow-hidden",
-            "transition-all duration-300 animate-in fade-in zoom-in-95",
+            "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:duration-200",
             "focus:outline-none",
           )}
         >
@@ -141,7 +143,10 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                   {["Sandale Dakar", "Premium", "Cuir Artisanal", "Nouveauté"].map((tag) => (
                     <button
                       key={tag}
-                      onClick={() => setQuery(tag)}
+                      type="button"
+                      onClick={() => {
+                        startTransition(() => setQuery(tag))
+                      }}
                       className="px-3 py-1.5 bg-muted/50 hover:bg-muted text-sm font-medium rounded-full transition-colors border border-border/50"
                     >
                       {tag}

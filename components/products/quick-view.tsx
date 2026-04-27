@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, startTransition } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { X, ShoppingBag, ChevronRight, Sparkles } from "lucide-react"
@@ -29,7 +29,8 @@ interface QuickViewProps {
 export function QuickView({ product, isOpen, onClose }: QuickViewProps) {
   const [selectedSize, setSelectedSize] = useState<number | null>(null)
   const [selectedColor, setSelectedColor] = useState<string | null>(null)
-  const { addToCart, setCartOpen } = useStore()
+  const addToCart = useStore((s) => s.addToCart)
+  const setCartOpen = useStore((s) => s.setCartOpen)
 
   useEffect(() => {
     if (isOpen && product) {
@@ -54,7 +55,7 @@ export function QuickView({ product, isOpen, onClose }: QuickViewProps) {
     })
     toast.success(`${product.name} ajouté au panier !`)
     onClose()
-    setCartOpen(true)
+    startTransition(() => setCartOpen(true))
   }
 
   return (

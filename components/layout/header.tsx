@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback, startTransition } from "react"
+import dynamic from "next/dynamic"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
@@ -9,8 +10,16 @@ import { Button } from "@/components/ui/button"
 import { useStore } from "@/lib/store"
 import { createClient } from "@/lib/supabase/client"
 import { cn } from "@/lib/utils"
-import { CartDrawer } from "@/components/cart/cart-drawer"
-import { SearchModal } from "@/components/search/search-modal"
+import { scheduleSearchCatalogPrefetch } from "@/lib/search/catalog-prefetch"
+
+const CartDrawer = dynamic(
+  () => import("@/components/cart/cart-drawer").then((m) => m.CartDrawer),
+  { ssr: false },
+)
+const SearchModal = dynamic(
+  () => import("@/components/search/search-modal").then((m) => m.SearchModal),
+  { ssr: false },
+)
 
 const navigation = [
   { name: "Accueil", href: "/" },
@@ -19,16 +28,60 @@ const navigation = [
   { name: "Contact", href: "/contact" },
 ]
 
+const preloadHeaderChunks = () => {
+  void import("@/components/cart/cart-drawer")
+  void import("@/components/search/search-modal")
+}
+
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const pathname = usePathname()
-  const { getCartCount, wishlist, setCartOpen } = useStore()
+  const setCartOpen = useStore((s) => s.setCartOpen)
+  const cartItemCount = useStore((s) => s.cart.reduce((c, i) => c + i.quantity, 0))
+  const wishlistCount = useStore((s) => s.wishlist.length)
   const [mounted, setMounted] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [loggedIn, setLoggedIn] = useState(false)
 
+  const openSearch = useCallback(() => {
+    startTransition(() => setSearchOpen(true))
+  }, [])
+
+  const openCart = useCallback(() => {
+    startTransition(() => setCartOpen(true))
+  }, [setCartOpen])
+
+  const toggleMobileMenu = useCallback(() => {
+    startTransition(() => setMobileMenuOpen((m) => !m))
+  }, [])
+
+  const closeMobileMenu = useCallback(() => {
+    startTransition(() => setMobileMenuOpen(false))
+  }, [])
+
+  const closeSearch = useCallback(() => {
+    startTransition(() => setSearchOpen(false))
+  }, [])
+
   useEffect(() => {
     setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number; cancelIdleCallback?: (id: number) => void }
+    const run = () => {
+      preloadHeaderChunks()
+      scheduleSearchCatalogPrefetch()
+    }
+    if (typeof w.requestIdleCallback === "function") {
+      // Retrait du timeout forcé pour ne précharger QUE quand le navigateur est vraiment inactif
+      const id = w.requestIdleCallback(run)
+      return () => w.cancelIdleCallback?.(id)
+    }
+    // Augmentation du délai de secours pour ne pas bloquer les interactions initiales
+    const t = w.setTimeout(run, 5000)
+    return () => w.clearTimeout(t)
   }, [])
 
   useEffect(() => {
@@ -49,8 +102,8 @@ export function Header() {
     }
   }, [])
 
-  const cartCount = mounted ? getCartCount() : 0
-  const wishlistCount = mounted ? wishlist.length : 0
+  const cartCount = mounted ? cartItemCount : 0
+  const wishlistBadgeCount = mounted ? wishlistCount : 0
   const accountHref = loggedIn ? "/mes-commandes" : "/connexion"
 
   return (
@@ -134,7 +187,8 @@ export function Header() {
                 variant="ghost"
                 size="icon"
                 className="hidden sm:flex rounded-full transition-all duration-300 hover:bg-accent/5 hover:text-accent transform hover:scale-110 active:scale-95"
-                onClick={() => setSearchOpen(true)}
+                onPointerDown={preloadHeaderChunks}
+                onClick={openSearch}
               >
                 <Search className="h-[1.1rem] w-[1.1rem]" />
               </Button>
@@ -152,9 +206,9 @@ export function Header() {
               <Link href="/wishlist">
                 <Button variant="ghost" size="icon" className="relative rounded-full transition-all duration-300 hover:bg-accent/5 hover:text-accent transform hover:scale-110 active:scale-95">
                   <Heart className="h-[1.15rem] w-[1.15rem]" />
-                  {wishlistCount > 0 && (
+                  {wishlistBadgeCount > 0 && (
                     <span className="absolute -top-0.5 -right-0.5 h-4.5 w-4.5 rounded-full bg-accent text-[9px] font-bold text-accent-foreground flex items-center justify-center border-2 border-background shadow-lg animate-in zoom-in duration-500">
-                      {wishlistCount}
+                      {wishlistBadgeCount}
                     </span>
                   )}
                 </Button>
@@ -164,7 +218,8 @@ export function Header() {
                 variant="ghost"
                 size="icon"
                 className="relative rounded-full transition-all duration-300 hover:bg-accent/5 hover:text-accent transform hover:scale-110 active:scale-95"
-                onClick={() => setCartOpen(true)}
+                onPointerDown={preloadHeaderChunks}
+                onClick={openCart}
                 aria-label="Ouvrir le panier"
               >
                 <ShoppingBag className="h-[1.15rem] w-[1.15rem]" />
@@ -180,7 +235,8 @@ export function Header() {
                 variant="ghost"
                 size="icon"
                 className="md:hidden rounded-full transition-all duration-300 hover:bg-accent/10 active:scale-90"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                onPointerDown={preloadHeaderChunks}
+                onClick={toggleMobileMenu}
               >
                 {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </Button>
@@ -200,7 +256,7 @@ export function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={closeMobileMenu}
                 className={cn(
                   "relative text-3xl font-serif font-bold tracking-tight transition-all duration-500",
                   mobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0",
@@ -223,13 +279,14 @@ export function Header() {
                 variant="outline"
                 size="icon"
                 className="rounded-full h-12 w-12 border-2"
-                onClick={() => setSearchOpen(true)}
+                onPointerDown={preloadHeaderChunks}
+                onClick={openSearch}
               >
                 <Search className="h-5 w-5" />
               </Button>
               <Link
                 href={accountHref}
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={closeMobileMenu}
                 className="text-sm font-semibold uppercase tracking-wider text-foreground/80 hover:text-accent"
               >
                 {loggedIn ? "Mes commandes" : "Connexion"}
@@ -243,7 +300,7 @@ export function Header() {
       <div className="h-[4.5rem] w-full shrink-0 md:h-[5.5rem]" aria-hidden />
 
       {/* Search Modal */}
-      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+      <SearchModal isOpen={searchOpen} onClose={closeSearch} />
 
       <CartDrawer />
     </>

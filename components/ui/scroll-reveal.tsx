@@ -41,13 +41,7 @@ export function ScrollReveal({
       observer.observe(currentRef)
     }
 
-    // Filet de sécurité : évite une page « vide » si l’observateur ne se déclenche pas
-    const fallback = window.setTimeout(() => {
-      setIsVisible(true)
-    }, 4000)
-
     return () => {
-      window.clearTimeout(fallback)
       if (currentRef) observer.unobserve(currentRef)
     }
   }, [threshold])
