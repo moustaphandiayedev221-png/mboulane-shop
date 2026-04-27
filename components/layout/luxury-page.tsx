@@ -106,7 +106,7 @@ export function LuxuryPanel({
   return (
     <div
       className={cn(
-        "rounded-[5px] border border-[#d8ccb8] bg-[#FDFBF7]/98 p-6 shadow-[0_14px_44px_rgba(0,0,0,0.06)] backdrop-blur-sm md:p-8",
+        "rounded-[5px] border border-[#d8ccb8] bg-[#FDFBF7]/98 p-4 shadow-[0_14px_44px_rgba(0,0,0,0.06)] backdrop-blur-sm sm:p-6 md:p-8 max-w-full overflow-hidden",
         className,
       )}
     >

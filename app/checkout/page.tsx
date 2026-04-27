@@ -399,15 +399,15 @@ export default function CheckoutPage() {
     <LuxuryMain>
       <Header />
 
-      <div className="pb-16 pt-24 md:pt-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="pb-16 pt-24 md:pt-32 overflow-x-hidden">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full box-border">
           <p className="mb-10 text-center text-[11px] font-medium uppercase tracking-[0.22em] text-[#8a7d70]">
             Paiement sécurisé · même exigence que la boutique
           </p>
 
           {/* Stepper */}
-          <div className="mx-auto mb-16 max-w-3xl px-4">
-            <div className="relative flex items-center justify-between">
+          <div className="mx-auto mb-16 max-w-3xl px-6 sm:px-4">
+            <div className="relative flex items-center justify-between px-2">
               <div className="absolute left-0 right-0 top-5 z-0 h-0.5 -translate-y-1/2 bg-[#ebe5dc]" />
               <div
                 className="absolute left-0 top-5 z-0 h-0.5 -translate-y-1/2 bg-[#b38b6d] transition-all duration-700 ease-in-out"
@@ -445,10 +445,10 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-12 mt-16">
+          <div className="grid lg:grid-cols-3 gap-8 lg:gap-12 mt-16 min-w-0">
             {/* Form Steps */}
-            <div className="lg:col-span-2">
-              <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="lg:col-span-2 min-w-0 overflow-hidden">
+              <form onSubmit={handleSubmit} className="space-y-8 min-w-0">
                 {submitError ? (
                   <div className="rounded-[5px] border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
                     {submitError}
@@ -462,7 +462,7 @@ export default function CheckoutPage() {
                       <User className="h-6 w-6 text-[#b38b6d]" />
                       <h2 className="font-serif text-2xl font-semibold text-[#3d3429]">Informations de contact</h2>
                     </div>
-                    <LuxuryPanel className="grid gap-4 sm:grid-cols-2">
+                    <LuxuryPanel className="grid gap-4 sm:grid-cols-2 max-w-full overflow-hidden">
                       <div className="space-y-2">
                         <Label htmlFor="firstName" className="text-xs uppercase tracking-widest font-bold text-muted-foreground">Prénom</Label>
                         <Input id="firstName" name="firstName" value={formData.firstName} onChange={handleInputChange} required className="h-14 border-[#e8e2d8] bg-white focus-visible:ring-[#b38b6d]/30" />
@@ -492,15 +492,15 @@ export default function CheckoutPage() {
                         <Input id="phone" name="phone" type="tel" placeholder="+221 77 XXX XX XX" value={formData.phone} onChange={handleInputChange} required className="h-14 border-[#e8e2d8] bg-white focus-visible:ring-[#b38b6d]/30" />
                       </div>
                     </LuxuryPanel>
-                    <Button type="button" onClick={nextStep} className="h-12 w-full rounded-full text-base font-semibold shadow-[0_12px_36px_rgba(179,139,109,0.28)]">
-                      Continuer vers la livraison
-                      <ChevronRight className="h-5 w-5 ml-2" />
+                    <Button type="button" onClick={nextStep} className="h-auto min-h-12 w-full rounded-full px-4 py-3 text-sm sm:text-base font-semibold shadow-[0_12px_36px_rgba(179,139,109,0.28)] whitespace-normal text-center leading-tight">
+                      <span className="truncate">Continuer vers la livraison</span>
+                      <ChevronRight className="h-5 w-5 ml-1 shrink-0" />
                     </Button>
                     <Button
                       type="button"
                       variant="outline"
                       onClick={openWhatsAppCheckout}
-                      className="lg:hidden h-12 w-full gap-3 rounded-full border-2 border-[#25D366]/40 bg-[#25D366]/[0.08] text-[15px] font-semibold text-[#128C7E] shadow-[0_8px_28px_rgba(37,211,102,0.18)] hover:border-[#25D366]/70 hover:bg-[#25D366]/15 active:scale-[0.99]"
+                      className="lg:hidden h-auto min-h-12 w-full gap-2 rounded-full border-2 border-[#25D366]/40 bg-[#25D366]/[0.08] text-[13px] sm:text-[15px] font-semibold text-[#128C7E] shadow-[0_8px_28px_rgba(37,211,102,0.18)] hover:border-[#25D366]/70 hover:bg-[#25D366]/15 active:scale-[0.99] px-4 py-3 whitespace-normal"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -523,7 +523,7 @@ export default function CheckoutPage() {
                       <MapPin className="h-6 w-6 text-[#b38b6d]" />
                       <h2 className="font-serif text-2xl font-semibold text-[#3d3429]">Adresse de livraison</h2>
                     </div>
-                    <LuxuryPanel className="space-y-8">
+                    <LuxuryPanel className="space-y-8 max-w-full overflow-hidden">
                       <div className="space-y-3">
                         <Label htmlFor="city" className="text-xs uppercase tracking-widest font-bold text-muted-foreground">Ville / Zone</Label>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -559,7 +559,7 @@ export default function CheckoutPage() {
                         <textarea id="notes" name="notes" rows={3} placeholder="Indications pour le livreur..." value={formData.notes} onChange={handleInputChange} className="w-full resize-none rounded-[5px] border border-[#e8e2d8] bg-white px-4 py-4 text-sm outline-none transition-all focus-visible:ring-2 focus-visible:ring-[#b38b6d]/30" />
                       </div>
                     </LuxuryPanel>
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 max-w-full">
                       <Button
                         type="button"
                         variant="outline"
@@ -582,7 +582,7 @@ export default function CheckoutPage() {
                       type="button"
                       variant="outline"
                       onClick={openWhatsAppCheckout}
-                      className="lg:hidden h-12 w-full gap-3 rounded-full border-2 border-[#25D366]/40 bg-[#25D366]/[0.08] text-[15px] font-semibold text-[#128C7E] shadow-[0_8px_28px_rgba(37,211,102,0.18)] hover:border-[#25D366]/70 hover:bg-[#25D366]/15 active:scale-[0.99]"
+                      className="lg:hidden h-auto min-h-12 w-full gap-2 rounded-full border-2 border-[#25D366]/40 bg-[#25D366]/[0.08] text-[13px] sm:text-[15px] font-semibold text-[#128C7E] shadow-[0_8px_28px_rgba(37,211,102,0.18)] hover:border-[#25D366]/70 hover:bg-[#25D366]/15 active:scale-[0.99] px-4 py-3 whitespace-normal"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -605,7 +605,7 @@ export default function CheckoutPage() {
                       <CreditCard className="h-6 w-6 text-[#b38b6d]" />
                       <h2 className="font-serif text-2xl font-semibold text-[#3d3429]">Méthode de paiement</h2>
                     </div>
-                    <LuxuryPanel className="space-y-6">
+                    <LuxuryPanel className="space-y-6 max-w-full overflow-hidden">
                       <div className="grid gap-4">
                         {paymentMethods.map((method) => (
                           <label
@@ -639,7 +639,7 @@ export default function CheckoutPage() {
                         ))}
                       </div>
                     </LuxuryPanel>
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 max-w-full">
                       <Button
                         type="button"
                         variant="outline"
@@ -673,7 +673,7 @@ export default function CheckoutPage() {
                       type="button"
                       variant="outline"
                       onClick={openWhatsAppCheckout}
-                      className="lg:hidden h-12 w-full gap-3 rounded-full border-2 border-[#25D366]/40 bg-[#25D366]/[0.08] text-[15px] font-semibold text-[#128C7E] shadow-[0_8px_28px_rgba(37,211,102,0.18)] hover:border-[#25D366]/70 hover:bg-[#25D366]/15 active:scale-[0.99]"
+                      className="lg:hidden h-auto min-h-12 w-full gap-2 rounded-full border-2 border-[#25D366]/40 bg-[#25D366]/[0.08] text-[13px] sm:text-[15px] font-semibold text-[#128C7E] shadow-[0_8px_28px_rgba(37,211,102,0.18)] hover:border-[#25D366]/70 hover:bg-[#25D366]/15 active:scale-[0.99] px-4 py-3 whitespace-normal"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -692,8 +692,8 @@ export default function CheckoutPage() {
             </div>
 
             {/* Order Summary */}
-            <div className="lg:col-span-1">
-              <LuxuryPanel className="sticky top-24">
+            <div className="lg:col-span-1 min-w-0 overflow-hidden">
+              <LuxuryPanel className="sticky top-24 max-w-full overflow-hidden">
                 <h2 className="mb-10 flex items-center gap-3 font-serif text-2xl font-semibold text-[#3d3429]">
                   <div className="flex h-10 w-10 items-center justify-center rounded-[5px] border border-[#e8e2d8]" style={{ background: "rgba(179,139,109,0.12)" }}>
                     <ShoppingBag className="h-6 w-6 text-[#b38b6d]" />
@@ -703,7 +703,7 @@ export default function CheckoutPage() {
  
                 <div className="space-y-6 mb-10">
                   {cart.map((item) => (
-                    <div key={`${item.product.id}-${item.size}`} className="flex gap-5 group/item">
+                    <div key={`${item.product.id}-${item.size}`} className="flex gap-4 group/item min-w-0">
                       <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-[5px] border border-[#e8e2d8] bg-[#FDFBF7] shadow-sm transition-shadow group-hover/item:shadow-md">
                         <Image
                           src={item.product.image}
@@ -716,12 +716,12 @@ export default function CheckoutPage() {
                           {item.quantity}
                         </span>
                       </div>
-                      <div className="flex-1 min-w-0 flex flex-col justify-center">
-                        <p className="truncate text-sm font-bold transition-colors group-hover/item:text-[#b38b6d]">{item.product.name}</p>
-                        <div className="mt-1.5 flex flex-wrap items-center gap-2 font-bold uppercase tracking-[0.15em] text-[9px] text-muted-foreground/60">
+                      <div className="flex-1 min-w-0 flex flex-col justify-center overflow-hidden">
+                        <p className="break-words whitespace-normal text-sm font-bold transition-colors group-hover/item:text-[#b38b6d]">{item.product.name}</p>
+                        <div className="mt-1.5 flex flex-wrap items-center gap-1.5 font-bold uppercase tracking-[0.12em] text-[9px] text-muted-foreground/60">
                           <span className="whitespace-nowrap">TAILLE {item.size}</span>
-                          <span className="h-1 w-1 rounded-full bg-border" />
-                          <span className="min-w-0 break-all">{item.color}</span>
+                          <span className="h-1 w-1 shrink-0 rounded-full bg-border" />
+                          <span className="min-w-0 truncate">{item.color}</span>
                         </div>
                         <p className="mt-1.5 text-base font-bold text-[#b38b6d]">
                           {formatPrice(item.product.price)}
@@ -738,7 +738,7 @@ export default function CheckoutPage() {
                   </div>
                   <div className="space-y-2">
                     <Label className="text-xs uppercase tracking-widest font-bold text-muted-foreground">Code promo</Label>
-                    <div className="flex min-w-0 gap-2">
+                    <div className="flex flex-col sm:flex-row min-w-0 gap-2 max-w-full">
                       <Input
                         value={promoCode}
                         onChange={(e) => setPromoCode(e.target.value)}
@@ -749,7 +749,7 @@ export default function CheckoutPage() {
                         type="button"
                         onClick={applyPromo}
                         disabled={promoStatus.validating}
-                        className="h-12 rounded-full px-6 shadow-[0_12px_36px_rgba(179,139,109,0.28)]"
+                        className="h-12 w-full sm:w-auto rounded-full px-6 shadow-[0_12px_36px_rgba(179,139,109,0.28)]"
                       >
                         {promoStatus.validating ? <Loader2 className="h-4 w-4 animate-spin" /> : "Appliquer"}
                       </Button>
@@ -762,8 +762,8 @@ export default function CheckoutPage() {
                       </p>
                     ) : null}
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground font-medium">Livraison ({formData.city})</span>
+                  <div className="flex justify-between text-sm gap-2">
+                    <span className="text-muted-foreground font-medium min-w-0 truncate">Livraison ({formData.city})</span>
                     <span className="font-bold">
                       {deliveryFee === 0 ? <span className="text-green-600">Gratuite</span> : formatPrice(deliveryFee)}
                     </span>
@@ -774,7 +774,7 @@ export default function CheckoutPage() {
                       <span className="font-bold text-green-700">-{formatPrice(promoStatus.discount)}</span>
                     </div>
                   ) : null}
-                  <div className="mt-2 flex justify-between border-t border-[#ebe5dc]/80 pt-6 font-serif text-2xl font-bold text-[#3d3429]">
+                  <div className="mt-2 flex justify-between border-t border-[#ebe5dc]/80 pt-6 font-serif text-xl sm:text-2xl font-bold text-[#3d3429]">
                     <span>Total</span>
                     <span className="text-[#b38b6d]">{formatPrice(total)}</span>
                   </div>
