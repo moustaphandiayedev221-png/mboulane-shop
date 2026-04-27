@@ -10,8 +10,8 @@
 
 /* MBOULANE SHOP - African Luxury Theme */
 :root {
-  /* Ultra-light Sand Beige (#FDFBF7) - Demande utilisateur */
-  --background: #FDFBF7;
+  /* Fond page aligné tunnel / fiches luxe (évite bande blanche bas d’écran, safe areas) */
+  --background: #F7F3EC;
   --foreground: #000000;
   
   /* Pure White Cards for maximum product prominence */
@@ -54,7 +54,7 @@
   
   --radius: 0.5rem;
   
-  --sidebar: #FDFBF7;
+  --sidebar: #F7F3EC;
   --sidebar-foreground: #000000;
   --sidebar-primary: #000000;
   --sidebar-primary-foreground: #FFFFFF;
@@ -76,7 +76,8 @@
 
 /* Gradient subtil ultra-premium recommandé pour casser l'effet plat */
 html {
-  background-color: var(--background);
+  /* Même teinte que LuxuryMain / checkout (surface crème, pas de blanc pur en bas) */
+  background-color: #F7F3EC;
 }
 
 html,
@@ -85,8 +86,14 @@ body {
 }
 
 body {
-  background-color: var(--background);
-  background-image: linear-gradient(to bottom, #FFFFFF 0%, #FDFBF7 100%);
+  background-color: #F7F3EC;
+  /* Dégradé très léger entièrement dans les beiges (plus de #FFF en tête = barre claire en bas iOS) */
+  background-image: linear-gradient(
+    to bottom,
+    #faf6f0 0%,
+    #f7f3ec 45%,
+    #f5f1e9 100%
+  );
   background-attachment: fixed;
 }
 
