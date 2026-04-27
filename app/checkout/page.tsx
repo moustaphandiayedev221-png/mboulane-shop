@@ -231,8 +231,15 @@ export default function CheckoutPage() {
       })
 
       if (!res.ok) {
-        const data = (await res.json().catch(() => null)) as { error?: string } | null
-        setSubmitError(data?.error || "Impossible d'enregistrer la commande. Réessayez.")
+        const data = (await res.json().catch(() => null)) as { error?: string, details?: { fieldErrors: Record<string, string[]> } } | null
+        let errorMessage = data?.error || "Impossible d'enregistrer la commande. Réessayez."
+        if (data?.details?.fieldErrors && Object.keys(data.details.fieldErrors).length > 0) {
+          const detailMessages = Object.entries(data.details.fieldErrors)
+            .map(([field, msgs]) => `${field}: ${msgs.join(", ")}`)
+            .join(" | ")
+          errorMessage += ` (${detailMessages})`
+        }
+        setSubmitError(errorMessage)
         setIsSubmitting(false)
         return
       }
