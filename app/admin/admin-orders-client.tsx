@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { OrderLineAttributes } from "@/components/orders/order-line-attributes"
 
 export type OrderStatus = "confirmée" | "préparation" | "expédiée" | "livrée" | "annulée" | "remboursée"
 
@@ -305,9 +306,13 @@ export function AdminOrdersClient({
                           <div key={`${it.product_id}-${idx}`} className="flex items-start justify-between gap-3">
                             <div className="min-w-0">
                               <p className="truncate text-sm font-semibold text-white">{it.name}</p>
-                              <p className="text-xs text-white/60">
-                                Qté {it.quantity} · Taille {it.size} · {it.color}
-                              </p>
+                              <OrderLineAttributes
+                                quantity={it.quantity}
+                                size={it.size}
+                                color={it.color}
+                                verboseSize
+                                className="text-white/60"
+                              />
                             </div>
                             <p className="shrink-0 text-sm font-semibold text-white">
                               {formatFcfa(Number(it.unit_price) * Number(it.quantity))}

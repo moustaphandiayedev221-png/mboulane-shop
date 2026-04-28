@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { startTransition, useCallback, useEffect, useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { toast } from "sonner"
@@ -44,7 +44,11 @@ export function ProductInteractions({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1)
   const [isZoomed, setIsZoomed] = useState(false)
 
-  const { addToCart, setCartOpen, addToWishlist, removeFromWishlist, isInWishlist } = useStore()
+  const addToCart = useStore((s) => s.addToCart)
+  const setCartOpen = useStore((s) => s.setCartOpen)
+  const addToWishlist = useStore((s) => s.addToWishlist)
+  const removeFromWishlist = useStore((s) => s.removeFromWishlist)
+  const isInWishlist = useStore((s) => s.isInWishlist)
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -66,10 +70,14 @@ export function ProductInteractions({ product }: { product: Product }) {
 
   const inWishlist = mounted ? isInWishlist(product.id) : false
 
-  const nextImage = () => setSelectedImage((prev) => (prev + 1) % galleryImages.length)
-  const prevImage = () => setSelectedImage((prev) => (prev - 1 + galleryImages.length) % galleryImages.length)
+  const nextImage = useCallback(() => {
+    startTransition(() => setSelectedImage((prev) => (prev + 1) % galleryImages.length))
+  }, [galleryImages.length])
+  const prevImage = useCallback(() => {
+    startTransition(() => setSelectedImage((prev) => (prev - 1 + galleryImages.length) % galleryImages.length))
+  }, [galleryImages.length])
 
-  const handleAddToCart = () => {
+  const handleAddToCart = useCallback(() => {
     const needsSize = (product.sizes ?? []).length > 0
     const needsColor = (product.colors ?? []).length > 0
     if (needsSize && selectedSize == null) {
@@ -80,25 +88,27 @@ export function ProductInteractions({ product }: { product: Product }) {
       toast.error("Veuillez sélectionner une couleur")
       return
     }
-    addToCart({
-      product,
-      quantity,
-      size: needsSize ? (selectedSize as number) : 0,
-      color: needsColor ? String(selectedColor) : "",
+    startTransition(() => {
+      addToCart({
+        product,
+        quantity,
+        size: needsSize ? (selectedSize as number) : 0,
+        color: needsColor ? String(selectedColor) : "",
+      })
+      setCartOpen(true)
     })
     toast.success(`${product.name} ajouté au panier !`)
-    setCartOpen(true)
-  }
+  }, [addToCart, product, quantity, selectedColor, selectedSize, setCartOpen])
 
-  const handleWishlist = () => {
+  const handleWishlist = useCallback(() => {
     if (inWishlist) {
-      removeFromWishlist(product.id)
+      startTransition(() => removeFromWishlist(product.id))
       toast.info(`${product.name} retiré des favoris`)
     } else {
-      addToWishlist(product)
+      startTransition(() => addToWishlist(product))
       toast.success(`${product.name} ajouté aux favoris !`)
     }
-  }
+  }, [addToWishlist, inWishlist, product, removeFromWishlist])
 
   const handleWhatsAppOrder = () => {
     const needsSize = (product.sizes ?? []).length > 0

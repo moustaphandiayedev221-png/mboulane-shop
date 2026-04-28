@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { startTransition, useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Product, formatPrice, useStore } from "@/lib/store"
@@ -24,14 +24,12 @@ export function ProductCard({
   variant = "default",
   layout = "grid",
 }: ProductCardProps) {
-  const {
-    setQuickView,
-    addToCart,
-    setCartOpen,
-    addToWishlist,
-    removeFromWishlist,
-    isInWishlist,
-  } = useStore()
+  const setQuickView = useStore((s) => s.setQuickView)
+  const addToCart = useStore((s) => s.addToCart)
+  const setCartOpen = useStore((s) => s.setCartOpen)
+  const addToWishlist = useStore((s) => s.addToWishlist)
+  const removeFromWishlist = useStore((s) => s.removeFromWishlist)
+  const isInWishlist = useStore((s) => s.isInWishlist)
 
   const [mounted, setMounted] = useState(false)
   useEffect(() => {
@@ -47,10 +45,10 @@ export function ProductCard({
     e.preventDefault()
     e.stopPropagation()
     if (inWishlist) {
-      removeFromWishlist(product.id)
+      startTransition(() => removeFromWishlist(product.id))
       toast.success("Retiré des favoris")
     } else {
-      addToWishlist(product)
+      startTransition(() => addToWishlist(product))
       toast.success("Ajouté aux favoris")
     }
   }
@@ -58,7 +56,7 @@ export function ProductCard({
   const handleQuickView = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    setQuickView(product)
+    startTransition(() => setQuickView(product))
   }
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -69,7 +67,7 @@ export function ProductCard({
     const color = product.colors?.[0] ?? ""
     addToCart({ product, quantity: 1, size, color })
     toast.success(`${product.name} ajouté au panier`)
-    setCartOpen(true)
+    startTransition(() => setCartOpen(true))
   }
 
   const wishlistButtonClass =

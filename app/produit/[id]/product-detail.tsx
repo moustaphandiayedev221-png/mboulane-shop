@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo, useRef } from "react"
+import { startTransition, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/layout/header"
@@ -67,7 +67,11 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
   const [shareOpen, setShareOpen] = useState(false)
   const shareRef = useRef<HTMLDivElement | null>(null)
 
-  const { addToCart, setCartOpen, addToWishlist, removeFromWishlist, isInWishlist } = useStore()
+  const addToCart = useStore((s) => s.addToCart)
+  const setCartOpen = useStore((s) => s.setCartOpen)
+  const addToWishlist = useStore((s) => s.addToWishlist)
+  const removeFromWishlist = useStore((s) => s.removeFromWishlist)
+  const isInWishlist = useStore((s) => s.isInWishlist)
   const [mounted, setMounted] = useState(false)
   const [recentlyViewedIds, setRecentlyViewedIds] = useState<string[]>([])
 
@@ -116,7 +120,7 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
   const pillIdle =
     "border-[#e0d9ce] bg-white/90 text-[#6b5d4f] hover:border-[#C0A080]/55 hover:bg-white"
 
-  const handleAddToCart = () => {
+  const handleAddToCart = useCallback(() => {
     const needsSize = (product.sizes ?? []).length > 0
     const needsColor = (product.colors ?? []).length > 0
     if (needsSize && selectedSize == null) {
@@ -128,15 +132,17 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
       return
     }
 
-    addToCart({
+    startTransition(() => {
+      addToCart({
       product,
       quantity,
       size: needsSize ? (selectedSize as number) : 0,
       color: needsColor ? String(selectedColor) : "",
+      })
+      setCartOpen(true)
     })
     toast.success(`${product.name} ajouté au panier !`)
-    setCartOpen(true)
-  }
+  }, [addToCart, product, quantity, selectedColor, selectedSize, setCartOpen])
 
   const handleWhatsAppOrder = () => {
     const needsSize = (product.sizes ?? []).length > 0
@@ -187,15 +193,15 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
     window.open(buildWhatsAppUrl(message), "_blank", "noopener,noreferrer")
   }
 
-  const handleWishlist = () => {
+  const handleWishlist = useCallback(() => {
     if (inWishlist) {
-      removeFromWishlist(product.id)
+      startTransition(() => removeFromWishlist(product.id))
       toast.info(`${product.name} retiré des favoris`)
     } else {
-      addToWishlist(product)
+      startTransition(() => addToWishlist(product))
       toast.success(`${product.name} ajouté aux favoris !`)
     }
-  }
+  }, [addToWishlist, inWishlist, product, removeFromWishlist])
 
   const categoryProducts = allProducts.filter((p) => p.id !== product.id && p.category === product.category)
   const badgeProducts = allProducts.filter(

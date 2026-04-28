@@ -9,6 +9,7 @@ import { Footer } from "@/components/layout/footer"
 import { Button } from "@/components/ui/button"
 import { formatPrice } from "@/lib/store"
 import { createClient } from "@/lib/supabase/client"
+import { OrderLineAttributes } from "@/components/orders/order-line-attributes"
 
 type OrderStatus = "confirmée" | "préparation" | "expédiée" | "livrée" | "annulée" | "remboursée"
 
@@ -129,11 +130,12 @@ export default function MesCommandesPage() {
                         </div>
                         <div className="min-w-0 flex-1">
                           <p className="font-medium text-[#3d3429]">{line.name}</p>
-                          <p className="text-xs text-[#8a7d72]">
-                            Qté {line.quantity}
-                            {line.size ? ` · ${line.size}` : ""}
-                            {line.color ? ` · ${line.color}` : ""}
-                          </p>
+                          <OrderLineAttributes
+                            quantity={line.quantity}
+                            size={line.size}
+                            color={line.color}
+                            className="text-[#8a7d72]"
+                          />
                         </div>
                         <p className="shrink-0 text-sm font-semibold text-[#3d3429]">
                           {formatPrice(line.unit_price * line.quantity)}

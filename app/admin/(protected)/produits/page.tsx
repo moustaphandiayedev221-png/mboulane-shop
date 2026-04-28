@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { startTransition, useDeferredValue, useEffect, useMemo, useState } from "react"
 import Image from "next/image"
 import { Plus, Search, Trash2, Pencil, Loader2, Check, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -74,6 +74,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 export default function AdminProductsPage() {
   const [q, setQ] = useState("")
+  const deferredQ = useDeferredValue(q)
   const [rows, setRows] = useState<ProductRow[]>([])
   const [categories, setCategories] = useState<CategoryRow[]>([])
   const [loading, setLoading] = useState(true)
@@ -87,12 +88,12 @@ export default function AdminProductsPage() {
   const [colorDraft, setColorDraft] = useState("#b38b6d")
 
   const filtered = useMemo(() => {
-    const query = q.trim().toLowerCase()
+    const query = deferredQ.trim().toLowerCase()
     if (!query) return rows
     return rows.filter((p) =>
       `${p.id} ${p.name} ${p.category}`.toLowerCase().includes(query),
     )
-  }, [rows, q])
+  }, [rows, deferredQ])
 
   const load = async () => {
     setLoading(true)
@@ -181,13 +182,15 @@ export default function AdminProductsPage() {
           <Button
             className="h-11 rounded-xl bg-[#b38b6d] text-black hover:bg-[#c29a7d]"
             onClick={() => {
-              setEditing(empty)
-              setMainImage([])
-              setImages([])
-              setVariantImages({})
-              setSizeDraft("")
-              setColorDraft("#b38b6d")
-              setOpen(true)
+              startTransition(() => {
+                setEditing(empty)
+                setMainImage([])
+                setImages([])
+                setVariantImages({})
+                setSizeDraft("")
+                setColorDraft("#b38b6d")
+                setOpen(true)
+              })
             }}
           >
             <Plus className="mr-2 h-4 w-4" />
@@ -200,7 +203,7 @@ export default function AdminProductsPage() {
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/45" />
             <Input
               value={q}
-              onChange={(e) => setQ(e.target.value)}
+              onChange={(e) => startTransition(() => setQ(e.target.value))}
               placeholder="Rechercher (id, nom, catégorie)…"
               className="h-12 rounded-xl border-white/10 bg-black/20 pl-10 text-white placeholder:text-white/35"
             />
