@@ -9,8 +9,7 @@ import { DeferredWhatsAppFloat } from "@/components/deferred-whatsapp-float.clie
 import { SupabaseStoreSync } from "@/components/supabase-store-sync"
 import { VisitTracker } from "@/components/analytics/visit-tracker"
 import { AntiCopy } from "@/components/security/anti-copy.client"
-import { Analytics } from "@vercel/analytics/next"
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { VercelMetrics } from "@/components/analytics/vercel-metrics.client"
 
 const poppins = Poppins({ 
   subsets: ["latin"],
@@ -33,10 +32,10 @@ const greatVibes = Great_Vibes({
 const siteUrl = getSiteBaseUrl()
 
 export const metadata: Metadata = {
-  title: 'MBOULANE SHOP | Sandales Africaines Premium en Cuir',
-  description: 'Découvrez MBOULANE SHOP - Sandales modernes en cuir inspirées du style africain. Élégance, confort et authenticité. Livraison au Sénégal et en Afrique.',
+  title: 'MBOULANE SHOP | Votre Boutique en Ligne',
+  description: 'Découvrez MBOULANE SHOP, votre boutique en ligne de confiance. Retrouvez une large sélection de produits : mode, accessoires, lifestyle et bien plus. Livraison rapide au Sénégal et à l\'international.',
   metadataBase: new URL(siteUrl),
-  keywords: ['sandales', 'cuir', 'africain', 'Sénégal', 'luxe', 'artisanat', 'mode', 'chaussures'],
+  keywords: ['boutique en ligne', 'e-commerce', 'Sénégal', 'mode', 'accessoires', 'lifestyle', 'shopping', 'tendances'],
   authors: [{ name: 'MBOULANE SHOP' }],
   creator: 'MBOULANE SHOP',
   openGraph: {
@@ -44,13 +43,13 @@ export const metadata: Metadata = {
     locale: 'fr_SN',
     url: siteUrl,
     siteName: 'MBOULANE SHOP',
-    title: 'MBOULANE SHOP | L\'élégance africaine à vos pieds',
-    description: 'Sandales africaines premium en cuir. Artisanat de qualité, design moderne.',
+    title: 'MBOULANE SHOP | Votre Boutique en Ligne',
+    description: 'Une large sélection de produits de qualité : mode, accessoires, lifestyle et bien plus. Livraison au Sénégal et à l\'international.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'MBOULANE SHOP | Sandales Africaines Premium',
-    description: 'L\'élégance africaine à vos pieds',
+    title: 'MBOULANE SHOP | Votre Boutique en Ligne',
+    description: 'Une large sélection de produits de qualité : mode, accessoires, lifestyle et bien plus. Livraison au Sénégal et à l\'international.',
   },
   icons: {
     icon: [{ url: "/brand-ms-logo.png", type: "image/png", sizes: "32x32" }],
@@ -85,8 +84,7 @@ export default function RootLayout({
           <QuickViewManager />
           <Toaster />
           <DeferredWhatsAppFloat />
-          <Analytics />
-          <SpeedInsights />
+          <VercelMetrics />
         </ThemeProvider>
       </body>
     </html>

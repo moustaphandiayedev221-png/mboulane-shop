@@ -59,22 +59,22 @@ export type AboutPageContent = {
 export const DEFAULT_ABOUT_PAGE: AboutPageContent = {
   metaTitle: "Notre Histoire | MBOULANE SHOP",
   metaDescription:
-    "Découvrez l'histoire de MBOULANE SHOP, nos artisans et notre passion pour les sandales artisanales au Sénégal.",
+    "Découvrez l'histoire de MBOULANE SHOP, notre équipe et notre passion pour les produits de qualité au Sénégal et à l'international.",
   hero: {
     scriptTitle: "Notre histoire",
     subtitle:
       "MBOULANE, c’est l’élégance artisanale — la même ligne graphique que notre accueil et notre boutique.",
-    eyebrowEmoji: "🇸🇳",
-    eyebrowLabel: "Made in Senegal",
+    eyebrowEmoji: "✨",
+    eyebrowLabel: "Qualité Premium",
   },
   story: {
     imageSrc: "/collection-artisan.jpg",
     imageStoragePath: null,
     heading: "Du Sénégal au monde entier",
     paragraphs: [
-      "MBOULANE SHOP est né d'une conviction profonde : l'artisanat africain mérite une place sur la scène internationale. Notre fondateur, passionné par le travail du cuir depuis son enfance, a décidé de créer une marque qui honore les traditions tout en embrassant la modernité.",
-      "Chaque sandale MBOULANE est le fruit d'un savoir-faire transmis de génération en génération. Nos artisans travaillent avec passion pour créer des pièces qui allient confort et élégance.",
-      "Aujourd'hui, MBOULANE c'est une équipe dévouée, des milliers de clients satisfaits, et une vision claire : la référence des sandales africaines premium.",
+      "MBOULANE SHOP est né d'une conviction profonde : proposer des produits d'exception à une clientèle exigeante. Notre équipe a décidé de créer une boutique en ligne qui honore la qualité tout en embrassant les tendances actuelles.",
+      "Chaque produit proposé par MBOULANE fait l'objet d'une sélection minutieuse. Nous travaillons avec passion pour vous offrir des articles qui allient style, fiabilité et élégance.",
+      "Aujourd'hui, MBOULANE c'est une équipe dévouée, des milliers de clients satisfaits, et une vision claire : devenir votre référence incontournable pour vos achats premium en ligne.",
     ],
     ctaLabel: "Découvrir nos créations",
     ctaHref: "/boutique",
@@ -82,19 +82,19 @@ export const DEFAULT_ABOUT_PAGE: AboutPageContent = {
   values: {
     eyebrow: "Nos valeurs",
     heading: "Ce qui nous guide",
-    intro: "Les principes qui donnent leur signature à chaque paire MBOULANE.",
+    intro: "Les principes qui donnent leur signature à chaque produit MBOULANE.",
     items: [
       {
         icon: "heart",
         title: "Passion",
         description:
-          "Chaque paire de sandales est créée avec amour et dévotion pour notre métier.",
+          "Chaque produit de notre catalogue est sélectionné avec soin et dévotion pour nos clients.",
       },
       {
         icon: "users",
         title: "Communauté",
         description:
-          "Nous soutenons les artisans locaux et contribuons au développement économique du Sénégal.",
+          "Nous sommes à l'écoute de nos clients et créons des liens durables basés sur la confiance.",
       },
       {
         icon: "leaf",
@@ -118,19 +118,19 @@ export const DEFAULT_ABOUT_PAGE: AboutPageContent = {
         year: "2026",
         title: "La naissance d'une idée",
         description:
-          "MBOULANE naît de la volonté de moderniser l'artisanat sénégalais tout en préservant son authenticité.",
+          "MBOULANE naît de la volonté de faciliter l'accès à une sélection de produits de qualité supérieure, où que vous soyez.",
       },
       {
         year: "2026",
         title: "Premiers pas",
         description:
-          "Lancement de notre première collection avec 5 modèles et une équipe de 3 artisans.",
+          "Lancement de notre boutique en ligne avec une première sélection pointue de produits lifestyle.",
       },
       {
         year: "2026",
         title: "Croissance",
         description:
-          "Plus de 500 clients satisfaits et expansion de notre atelier avec 10 artisans qualifiés.",
+          "Plus de 500 clients satisfaits et expansion de notre catalogue pour mieux répondre à vos besoins.",
       },
       {
         year: "2026",
@@ -142,8 +142,7 @@ export const DEFAULT_ABOUT_PAGE: AboutPageContent = {
   },
   closing: {
     heading: "Rejoignez l'aventure MBOULANE",
-    body:
-      "Découvrez nos sandales et soutenez l'artisanat sénégalais — la même qualité que sur notre vitrine en ligne.",
+    body: "Découvrez notre sélection d'articles exclusifs et profitez d'une expérience d'achat incomparable.",
     primaryLabel: "Voir la boutique",
     primaryHref: "/boutique",
     secondaryLabel: "Nous contacter",
