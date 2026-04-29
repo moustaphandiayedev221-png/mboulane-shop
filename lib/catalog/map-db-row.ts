@@ -17,6 +17,7 @@ export type ProductRow = {
   badge?: string | null
   rating: number | string
   review_count: number | string
+  created_at?: string
 }
 
 function normalizeHomeSection(v: unknown): Product["homeSection"] | undefined {
@@ -48,5 +49,6 @@ export function mapRowToProduct(row: ProductRow): Product {
     badge: row.badge ?? undefined,
     rating: Number(row.rating),
     reviews: Number(row.review_count),
+    createdAt: row.created_at,
   }
 }

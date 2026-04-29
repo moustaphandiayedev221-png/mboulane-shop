@@ -168,8 +168,17 @@ export function PremiumCollectionSection({
   products: Product[]
 }) {
   const explicit = products.filter((p) => p.homeSection === "premium_luxe")
-  const fallback = products.filter((p) => p.category === "Premium" || p.price >= 38000)
-  const premiumProducts = [...explicit, ...fallback.filter((p) => !explicit.some((e) => e.id === p.id))].slice(0, 4)
+  const remaining = products.filter((p) => p.homeSection !== "premium_luxe")
+  
+  const fallback = remaining.filter((p) => p.category === "Premium" || p.price >= 38000)
+  
+  const sortedFallback = [...fallback].sort((a, b) => {
+    const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0
+    const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0
+    return dateB - dateA
+  })
+
+  const premiumProducts = [...explicit, ...sortedFallback].slice(0, 4)
 
   return (
     <section

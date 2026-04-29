@@ -26,15 +26,18 @@ export function ArtisanalCollectionSection({
   content: ArtisanalHomeContent
 }) {
   const explicit = products.filter((p) => p.homeSection === "collection_artisanale")
-  const fallback = [
-    ...products.filter(
-      (p) => p.category === "Artisanal & Unique" || p.badge === "Édition Limitée",
-    ),
-    ...products.filter(
-      (p) => p.category !== "Artisanal & Unique" && p.badge !== "Édition Limitée",
-    ),
-  ]
-  const artisanalProducts = [...explicit, ...fallback.filter((p) => !explicit.some((e) => e.id === p.id))].slice(0, 4)
+  const remaining = products.filter((p) => p.homeSection !== "collection_artisanale")
+  
+  const badged = remaining.filter((p) => p.category === "Artisanal & Unique" || p.badge === "Édition Limitée")
+  const unbadged = remaining.filter((p) => p.category !== "Artisanal & Unique" && p.badge !== "Édition Limitée")
+  
+  const sortedUnbadged = [...unbadged].sort((a, b) => {
+    const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0
+    const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0
+    return dateB - dateA
+  })
+
+  const artisanalProducts = [...explicit, ...badged, ...sortedUnbadged].slice(0, 4)
 
   const bullets = content.bullets
 

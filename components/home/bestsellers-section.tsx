@@ -14,8 +14,19 @@ export function BestSellersSection({
   products?: Product[]
 }) {
   const explicit = products.filter((p) => p.homeSection === "best_sellers")
-  const fallback = products.filter((p) => p.badge === "Best Seller" || p.rating >= 4.8)
-  const bestSellers = [...explicit, ...fallback.filter((p) => !explicit.some((e) => e.id === p.id))].slice(0, 8)
+  const remaining = products.filter((p) => p.homeSection !== "best_sellers")
+  
+  // Dans le remaining, on prend ceux qui ont le badge "Best Seller" ou un super rating
+  const fallback = remaining.filter((p) => p.badge === "Best Seller" || p.rating >= 4.8)
+  
+  // Tri par date pour montrer les best sellers récents
+  const sortedFallback = [...fallback].sort((a, b) => {
+    const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0
+    const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0
+    return dateB - dateA
+  })
+
+  const bestSellers = [...explicit, ...sortedFallback].slice(0, 8)
 
   return (
     <LuxuryProductGridSection

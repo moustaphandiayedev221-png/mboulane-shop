@@ -14,15 +14,19 @@ export function NewArrivalsSection({
   products?: Product[]
 }) {
   const explicit = products.filter((p) => p.homeSection === "nouveautes")
-  const fallback = [
-    ...products.filter((p) => p.badge === "Nouveau"),
-    ...products.filter(
-      (p) =>
-        ["1", "2", "3", "4", "5", "6", "7", "8"].includes(p.id) &&
-        p.badge !== "Nouveau",
-    ),
-  ]
-  const newArrivals = [...explicit, ...fallback.filter((p) => !explicit.some((e) => e.id === p.id))].slice(0, 8)
+  const remaining = products.filter((p) => p.homeSection !== "nouveautes")
+  
+  const badged = remaining.filter((p) => p.badge === "Nouveau")
+  const unbadged = remaining.filter((p) => p.badge !== "Nouveau")
+  
+  // Tri par date de création (les plus récents en premier)
+  const sortedUnbadged = [...unbadged].sort((a, b) => {
+    const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0
+    const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0
+    return dateB - dateA
+  })
+
+  const newArrivals = [...explicit, ...badged, ...sortedUnbadged].slice(0, 8)
 
   return (
     <LuxuryProductGridSection

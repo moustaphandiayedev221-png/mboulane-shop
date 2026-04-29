@@ -20,6 +20,7 @@ export interface Product {
   badge?: string
   rating: number
   reviews: number
+  createdAt?: string
 }
 
 export const COLOR_MAP: Record<string, string> = {

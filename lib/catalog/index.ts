@@ -23,6 +23,7 @@ async function fetchProductsFromSupabase(): Promise<Product[]> {
       .from("products")
       .select("*")
       .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: false })
 
     if (error) throw new Error(error.message)
     if (!data?.length) throw new Error("Aucun produit en base (table products vide). Lancez le seed.")
