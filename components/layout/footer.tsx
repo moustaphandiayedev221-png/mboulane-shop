@@ -52,7 +52,7 @@ export function Footer() {
               MBOULANE<Footprints className="inline-block h-[0.85em] w-[0.85em] shrink-0 translate-y-[0.08em] text-[#c9a14f] transition-colors duration-300 group-hover:text-[#e8cf7a]" strokeWidth={1.55} aria-hidden />SHOP
             </Link>
             <p className="mt-5 text-sm text-primary-foreground/70 max-w-sm leading-relaxed">
-              {"L'élégance africaine à vos pieds. Sandales premium en cuir, fabriquées avec passion au Sénégal par nos artisans talentueux."}
+              {"L'élégance africaine à votre portée. Produits premium exclusifs, proposés avec passion au Sénégal."}
             </p>
             
             {/* Contact Info */}

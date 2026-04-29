@@ -6,7 +6,7 @@ import { Metadata } from "next"
 export const metadata: Metadata = {
   title: "Guide des Tailles | MBOULANE SHOP",
   description:
-    "Trouvez la pointure idéale pour vos sandales avec notre guide de correspondances et conseils.",
+    "Trouvez la taille idéale pour vos produits avec notre guide de correspondances et conseils.",
 }
 
 const BRONZE = "#b38b6d"

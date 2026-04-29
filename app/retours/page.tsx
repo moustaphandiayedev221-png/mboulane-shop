@@ -38,7 +38,7 @@ export default function RetoursPage() {
                   Politique de retour (14 jours)
                 </h2>
                 <p className="font-light leading-relaxed text-[#6b5d4f]">
-                  Si vos sandales MBOULANE ne vous conviennent pas parfaitement ou si la taille n&apos;est pas
+                  Si vos articles MBOULANE ne vous conviennent pas parfaitement ou si la taille n&apos;est pas
                   adéquate, vous disposez d&apos;un délai de 14 jours francs après réception pour nous les retourner.
                   L&apos;article doit être non porté, dans son emballage d&apos;origine, et en parfait état de revente.
                 </p>
@@ -65,7 +65,7 @@ export default function RetoursPage() {
                     Nous vous enverrons un bordereau de retour (les frais de port de retour peuvent être à votre charge
                     selon votre localisation).
                   </li>
-                  <li>Emballez soigneusement les sandales.</li>
+                  <li>Emballez soigneusement les articles.</li>
                   <li>
                     Une fois le colis réceptionné et vérifié à notre atelier, nous procéderons au remboursement ou à
                     l&apos;envoi de la nouvelle taille.
@@ -87,7 +87,7 @@ export default function RetoursPage() {
                 </h2>
                 <p className="font-light leading-relaxed text-[#6b5d4f]">
                   Nos cuirs sont minutieusement sélectionnés. L&apos;artisanat implique une part de naturel (nuances de
-                  cuir, marques d&apos;authenticité). Si une sandale présente un réel défaut de fabrication, MBOULANE
+                  cuir, marques d&apos;authenticité). Si un produit présente un réel défaut de fabrication, MBOULANE
                   prendra intégralement en charge son échange dans les plus brefs délais.
                 </p>
               </div>

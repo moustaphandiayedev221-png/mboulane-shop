@@ -18,7 +18,7 @@ type HeroValue = {
 
 const DEFAULTS: HeroValue = {
   title: "L’élégance africaine à vos pieds",
-  subtitle: "Sandales premium en cuir, fabriquées avec passion au Sénégal.",
+  subtitle: "Articles premium, fabriqués avec passion au Sénégal.",
   ctaLabel: "Découvrir la boutique",
   ctaHref: "/boutique",
   // Fallback (état actuel du site) si la DB n'a pas encore d'image

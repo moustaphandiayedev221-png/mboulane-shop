@@ -11,12 +11,12 @@ const BRONZE = "#b38b6d"
 
 const faqs = [
   {
-    question: "Où sont fabriquées vos sandales ?",
+    question: "Où sont fabriqués vos produits ?",
     answer:
-      "Toutes nos sandales sont fièrement fabriquées à la main dans notre atelier à Dakar, au Sénégal. Nous travaillons exclusivement avec des maîtres artisans locaux.",
+      "Tous nos produits sont fièrement fabriqués à la main dans notre atelier à Dakar, au Sénégal. Nous travaillons exclusivement avec des maîtres artisans locaux.",
   },
   {
-    question: "Comment entretenir le cuir de mes sandales MBOULANE ?",
+    question: "Comment entretenir mes articles MBOULANE en cuir ?",
     answer:
       "Nos cuirs premium sont naturels. Nous vous recommandons de les nourrir occasionnellement avec un baume ou une cire d'abeille incolore. Évitez les expositions prolongées à l'eau ou au soleil de manière excessive.",
   },

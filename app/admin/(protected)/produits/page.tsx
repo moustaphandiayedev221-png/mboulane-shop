@@ -361,7 +361,7 @@ export default function AdminProductsPage() {
                 value={editing.name}
                 onChange={(e) => setEditing((s) => ({ ...s, name: e.target.value }))}
                 className="h-11 rounded-xl border-white/10 bg-black/20 text-white"
-                placeholder="Sandale …"
+                placeholder="Produit …"
               />
             </Field>
             <Field label="Prix">

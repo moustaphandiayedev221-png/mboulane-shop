@@ -63,7 +63,7 @@ export function HeroSection({ hero }: { hero: HeroContent }) {
       <div className="absolute inset-0 z-0">
         <Image
           src={bg}
-          alt="Sandales en cuir crème, lanière T à motifs géométriques, lumière dorée sur parquet — MBOULANE"
+          alt="Produits premium exclusifs MBOULANE"
           fill
           priority
           fetchPriority="high"

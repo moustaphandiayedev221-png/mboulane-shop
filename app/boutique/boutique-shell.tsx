@@ -496,7 +496,7 @@ function ShopContent({
           <LuxuryScriptHeading title="La Boutique" />
 
           <p className="mx-auto max-w-2xl text-center text-sm font-light leading-relaxed text-[#6b5d4f] md:text-base">
-            Parcourez nos sandales et créations artisanales — la même exigence luxe que sur notre accueil,
+            Parcourez nos créations et produits premium — la même exigence luxe que sur notre accueil,
             avec des filtres pensés pour vous guider vers la paire idéale.
           </p>
 

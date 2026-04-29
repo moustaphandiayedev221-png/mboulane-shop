@@ -332,7 +332,7 @@ export default function CheckoutPage() {
               </div>
               <h1 className="mb-4 font-serif text-3xl font-semibold text-[#3d3429]">Votre panier est vide</h1>
               <p className="mb-8 font-light text-[#6b5d4f]">
-                Découvrez nos sandales premium et ajoutez-les à votre panier.
+                Découvrez nos produits premium et ajoutez-les à votre panier.
               </p>
               <Button asChild className="rounded-full px-8 shadow-[0_12px_36px_rgba(179,139,109,0.28)]">
                 <Link href="/boutique">Voir la boutique</Link>

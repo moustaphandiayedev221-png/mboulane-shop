@@ -145,7 +145,7 @@ export function ReviewsSection({
         <LuxuryScriptHeading title="Avis Clients" />
 
         <p className="mx-auto mb-12 max-w-2xl text-center text-sm leading-relaxed text-muted-foreground md:mb-14 md:text-lg">
-          Ce que nos clients disent de leurs sandales MBOULANE
+          Ce que nos clients disent de nos produits MBOULANE
         </p>
 
         <div className="relative">

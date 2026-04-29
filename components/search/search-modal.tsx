@@ -73,7 +73,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             <input
               ref={inputRef}
               type="text"
-              placeholder="Rechercher des sandales, catégories..."
+              placeholder="Rechercher des produits, catégories..."
               className="flex-1 bg-transparent border-none focus:outline-none text-lg px-4 text-foreground placeholder:text-muted-foreground"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -140,7 +140,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                   Recherches Populaires
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {["Sandale Dakar", "Premium", "Cuir Artisanal", "Nouveauté"].map((tag) => (
+                  {["Mode", "Premium", "Artisanat", "Nouveauté"].map((tag) => (
                     <button
                       key={tag}
                       type="button"
