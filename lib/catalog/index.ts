@@ -79,11 +79,17 @@ async function fetchReviewsFromSupabase(): Promise<CustomerReview[]> {
   }
 }
 
+const getReviewsCached = unstable_cache(
+  async () => await fetchReviewsFromSupabase(),
+  ["catalog.reviews.v1"],
+  { revalidate: 3600, tags: ["catalog.reviews"] },
+)
+
 export async function getReviews(): Promise<CustomerReview[]> {
-  return await fetchReviewsFromSupabase()
+  return await getReviewsCached()
 }
 
-export async function getCategoryLabels(): Promise<string[]> {
+async function fetchCategoryLabelsFromSupabase(): Promise<string[]> {
   try {
     const supabase = createPublicServerClient()
     const { data, error } = await supabase
@@ -98,4 +104,14 @@ export async function getCategoryLabels(): Promise<string[]> {
   } catch {
     return fallbackCategories
   }
+}
+
+const getCategoryLabelsCached = unstable_cache(
+  async () => await fetchCategoryLabelsFromSupabase(),
+  ["catalog.categories.v1"],
+  { revalidate: 3600, tags: ["catalog.categories"] },
+)
+
+export async function getCategoryLabels(): Promise<string[]> {
+  return await getCategoryLabelsCached()
 }
