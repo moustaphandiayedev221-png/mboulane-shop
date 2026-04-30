@@ -102,8 +102,8 @@ const nextConfig = {
     ignoreBuildErrors: false,
   },
   images: {
-    unoptimized: false,
-    remotePatterns: supabaseStorageImageRemotePatterns(),
+    loader: "custom",
+    loaderFile: "./image-loader.js",
   },
 }
 

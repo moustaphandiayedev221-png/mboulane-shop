@@ -7,7 +7,6 @@ import { X, Plus, Minus, ShoppingBag, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useStore, formatPrice } from "@/lib/store"
 import { cn } from "@/lib/utils"
-import { shouldUnoptimize } from "@/lib/images"
 
 export function CartDrawer() {
   const isCartOpen = useStore((s) => s.isCartOpen)
@@ -132,7 +131,6 @@ export function CartDrawer() {
                       alt={item.product.name}
                       fill
                       className="object-cover"
-                      unoptimized={shouldUnoptimize(item.product.image)}
                     />
                   </div>
                   <div className="flex-1 min-w-0">
