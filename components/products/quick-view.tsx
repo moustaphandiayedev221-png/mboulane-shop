@@ -15,6 +15,7 @@ import {
 import { Product, formatPrice, useStore } from "@/lib/store"
 import { COLOR_MAP } from "@/lib/data/products"
 import { getColorSwatchStyle, isWhiteSwatch } from "@/lib/colors"
+import { shouldUnoptimize } from "@/lib/images"
 import { toast } from "sonner"
 
 const GOLD = "#D4AF37"
@@ -95,6 +96,7 @@ export function QuickView({ product, isOpen, onClose }: QuickViewProps) {
               priority
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover transition-transform duration-[1.2s] ease-out hover:scale-[1.03]"
+              unoptimized={shouldUnoptimize(product.image)}
             />
             <div
               className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/15"

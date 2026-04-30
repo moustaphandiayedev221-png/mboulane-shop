@@ -12,6 +12,7 @@ import { useStore, formatPrice } from "@/lib/store"
 import type { Product } from "@/lib/data/products"
 import { COLOR_MAP } from "@/lib/data/products"
 import { getColorSwatchStyle, isWhiteSwatch } from "@/lib/colors"
+import { shouldUnoptimize } from "@/lib/images"
 import {
   Heart,
   ShoppingBag,
@@ -277,6 +278,7 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
                     isZoomed ? "scale-150" : "scale-[1.03]",
                   )}
                   priority
+                  unoptimized={shouldUnoptimize(galleryImages[selectedImage] || product.image)}
                 />
 
                 {product.badge && (
@@ -342,7 +344,14 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
                       aria-label={`Vue ${index + 1} sur ${galleryImages.length}`}
                       aria-current={selectedImage === index ? true : undefined}
                     >
-                      <Image src={img} alt={`${product.name} — vue ${index + 1}`} fill className="object-cover" sizes="84px" />
+                      <Image 
+                        src={img} 
+                        alt={`${product.name} — vue ${index + 1}`} 
+                        fill 
+                        className="object-cover" 
+                        sizes="84px" 
+                        unoptimized={shouldUnoptimize(img)}
+                      />
                     </button>
                   ))}
                 </div>

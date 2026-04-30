@@ -8,6 +8,7 @@ import Link from "next/link"
 import { formatPrice } from "@/lib/store"
 import type { Product } from "@/lib/store"
 import { cn } from "@/lib/utils"
+import { shouldUnoptimize } from "@/lib/images"
 import { getSearchCatalogFromCache, prefetchSearchCatalog } from "@/lib/search/catalog-prefetch"
 
 interface SearchModalProps {
@@ -117,6 +118,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
                             sizes="64px"
+                            unoptimized={shouldUnoptimize(product.image)}
                           />
                         </div>
                         <div className="flex-1 min-w-0">

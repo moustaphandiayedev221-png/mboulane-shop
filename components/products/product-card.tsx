@@ -6,6 +6,7 @@ import Image from "next/image"
 import { Product, formatPrice, useStore } from "@/lib/store"
 import { COLOR_MAP } from "@/lib/data/products"
 import { getColorSwatchStyle } from "@/lib/colors"
+import { shouldUnoptimize } from "@/lib/images"
 import { Eye, Heart, ShoppingBag } from "lucide-react"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
@@ -96,6 +97,7 @@ export function ProductCard({
               fill
               sizes="(max-width: 640px) 99px, (max-width: 1024px) 126px, 150px"
               className="object-cover transition-transform duration-700 ease-out group-hover/card:scale-[1.03]"
+              unoptimized={shouldUnoptimize(product.image)}
             />
 
             <Link
@@ -217,6 +219,7 @@ export function ProductCard({
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className="object-cover transition-transform duration-700 ease-out group-hover/card:scale-[1.04]"
+              unoptimized={shouldUnoptimize(product.image)}
             />
 
             <Link
@@ -321,6 +324,7 @@ export function ProductCard({
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             className="object-cover transition-transform duration-700 ease-out will-change-transform group-hover:scale-110"
+            unoptimized={shouldUnoptimize(product.image)}
           />
 
           <Link

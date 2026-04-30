@@ -22,3 +22,8 @@ node_modules
 .next/
 .DS_Store
 .vercel
+
+# Scratch and temporary files
+scratch/
+tmp-*.png
+*.png.log
