@@ -4,22 +4,37 @@ import { fileURLToPath } from "url"
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 function supabaseStorageImageRemotePatterns() {
+  const patterns = []
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim()
-  if (!url) return []
-  try {
-    const hostname = new URL(url).hostname
-    if (!hostname) return []
-    return [
-      {
-        protocol: "https",
-        hostname,
-        pathname: "/storage/v1/object/public/**",
-      },
-    ]
-  } catch {
-    return []
+  
+  if (url) {
+    try {
+      const hostname = new URL(url).hostname
+      if (hostname) {
+        patterns.push({
+          protocol: "https",
+          hostname,
+          pathname: "/storage/v1/object/public/**",
+        })
+      }
+    } catch {
+      // ignore
+    }
   }
+
+  // Fallback robuste pour le projet actuel (évite les images cassées si l'env est manquante au build)
+  const fallbackHost = "jfhdadnwjfirgymqatvm.supabase.co"
+  if (!patterns.some(p => p.hostname === fallbackHost)) {
+    patterns.push({
+      protocol: "https",
+      hostname: fallbackHost,
+      pathname: "/storage/v1/object/public/**",
+    })
+  }
+
+  return patterns
 }
+
 
 function securityHeaders() {
   const prod = process.env.VERCEL === "1" || process.env.NODE_ENV === "production"
