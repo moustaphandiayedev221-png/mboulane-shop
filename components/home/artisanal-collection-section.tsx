@@ -37,7 +37,7 @@ export function ArtisanalCollectionSection({
     return dateB - dateA
   })
 
-  const artisanalProducts = [...explicit, ...badged, ...sortedUnbadged].slice(0, 4)
+  const artisanalProducts = [...explicit, ...badged, ...sortedUnbadged].slice(0, 8)
 
   const bullets = content.bullets
 

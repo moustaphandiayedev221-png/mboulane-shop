@@ -178,7 +178,7 @@ export function PremiumCollectionSection({
     return dateB - dateA
   })
 
-  const premiumProducts = [...explicit, ...sortedFallback].slice(0, 4)
+  const premiumProducts = [...explicit, ...sortedFallback].slice(0, 8)
 
   return (
     <section
